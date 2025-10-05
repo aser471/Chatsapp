@@ -29,10 +29,63 @@
         .btn-success { background: #10b981; color: white; }
         .btn-google { background-color: #4285F4; color: white; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-google:hover { background-color: #357ae8; }
-        .room-card { background: white; border-radius: 12px; overflow: hidden; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .room-card:hover { transform: translateY(-5px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
-        .room-card img { width: 100%; height: 150px; object-fit: cover; }
+        .room-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+        .room-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        .room-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            transition: transform 0.3s ease-in-out;
+        }
+        .room-card:hover img {
+            transform: scale(1.05);
+        }
         @media (min-width: 768px) { .room-card img { height: 200px; } }
+        .room-card-content {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .room-card-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .room-card-description {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 10px;
+            flex-grow: 1;
+        }
+        .room-card-users {
+            font-size: 0.85em;
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
         
         /* إصلاح مشاكل عرض الرسائل */
         .message { 
@@ -177,6 +230,24 @@
         .user-badge { display: inline-block; padding: 4px 12px; background: #10b981; color: white; border-radius: 12px; font-size: 12px; font-weight: 600; animation: badgePulse 2s ease-in-out infinite; }
         @keyframes badgePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
         .admin-badge { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); animation: adminBadgeGlow 2s ease-in-out infinite; }
+        .vip-badge {
+            display: inline-block;
+            margin-right: 5px;
+            font-size: 1.2em;
+            animation: vipPulse 1.5s infinite alternate, vipColorChange 3s infinite linear;
+            vertical-align: middle;
+        }
+        @keyframes vipPulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+        @keyframes vipColorChange {
+            0% { color: gold; }
+            25% { color: #ffd700; }
+            50% { color: #ffcc00; }
+            75% { color: #ffeb3b; }
+            100% { color: gold; }
+        }
         @keyframes adminBadgeGlow { 0%, 100% { box-shadow: 0 0 10px rgba(255, 107, 107, 0.5); } 50% { box-shadow: 0 0 20px rgba(255, 107, 107, 0.8); } }
         .moderator-badge { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); animation: moderatorBadgeGlow 2s ease-in-out infinite; }
         @keyframes moderatorBadgeGlow { 0%, 100% { box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); } 50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.8); } }
@@ -561,7 +632,7 @@
                     <a href="#" class="nav-link" onclick="showRooms()">الغرف</a>
                     <a href="#" class="nav-link" onclick="showProfile()">الملف الشخصي</a>
                     <a href="#" class="nav-link" onclick="showPrivateMessages()">الرسائل الخاصة</a>
-                    <a href="#" class="nav-link" id="adminBtn" onclick="showAdmin()" class="hidden">الإدارة</a>
+                    <a href="#" class="nav-link hidden" id="adminBtn" onclick="showAdmin()">الإدارة</a>
                 </div>
                 <h1 class="header-title">شات العزاوي</h1>
             </div>
@@ -585,7 +656,7 @@
         <div id="roomsView" class="hidden">
             <div class="card">
                 <h2 class="title-section" style="margin-bottom: 24px; text-align: center;">الغرف المتاحة</h2>
-                <div id="roomsGrid" class="grid grid-cols-2"></div>
+                <div id="roomsGrid" class="rooms-grid"></div>
             </div>
         </div>
 
@@ -601,7 +672,7 @@
                 </div>
                 <div style="display: flex; align-items: center; gap: 12px;">
                     <img id="userAvatarBtn2" class="profile-btn hidden" onclick="showProfile()">
-                    <span id="userNameDisplay2" style="font-weight: 600;"></span>
+                    <span id="userNameDisplay2" style="font-weight: 600;"></span><span id="chatVipBadge" class="vip-badge hidden">👑</span>
                     <div id="userCoinsDisplay2" class="coins-display hidden">
                         <span class="golden-coin">🪙</span>
                         <span id="userCoinsCount2">0</span>
@@ -745,23 +816,36 @@
             
             <div class="profile-header">
                 <img id="profileAvatar" class="profile-avatar" src="">
-                <h3 id="profileName" style="font-size: 24px; font-weight: bold; margin-bottom: 8px;"></h3>
-                <p id="profileEmail" style="color: #6b7280;"></p>
+                <h3 id="profileName" style="font-size: 24px; font-weight: bold; margin-bottom: 8px;"></h3><span id="profileVipBadge" class="vip-badge hidden">👑</span>
+                <p id="profileEmail" class="text-gray-600 mb-2"></p>
+                <div id="profileEmailVisibility" class="text-sm text-gray-500 mb-4"></div>
                 <div id="profileRole" class="user-badge" style="margin-top: 8px;"></div>
             </div>
             
-            <div class="profile-stats">
-                <div class="stat-item">
-                    <div class="stat-value" id="profileCoins">0</div>
-                    <div class="stat-label">الكوينز</div>
+            <div class="profile-stats grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="stat-item p-4 bg-gray-100 rounded-lg text-center">
+                    <div class="stat-value text-2xl font-bold text-indigo-600" id="profileCoins">0</div>
+                    <div class="stat-label text-sm text-gray-500">الكوينز</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="profileMessages">0</div>
-                    <div class="stat-label">الرسائل</div>
+                <div class="stat-item p-4 bg-gray-100 rounded-lg text-center">
+                    <div class="stat-value text-2xl font-bold text-indigo-600" id="profileMessages">0</div>
+                    <div class="stat-label text-sm text-gray-500">الرسائل</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="profileJoinDate">-</div>
-                    <div class="stat-label">تاريخ الانضمام</div>
+                <div class="stat-item p-4 bg-gray-100 rounded-lg text-center">
+                    <div class="stat-value text-2xl font-bold text-indigo-600" id="profileJoinDate">-</div>
+                    <div class="stat-label text-sm text-gray-500">تاريخ الانضمام</div>
+                </div>
+                <div class="stat-item p-4 bg-gray-100 rounded-lg text-center">
+                    <div class="stat-value text-2xl font-bold text-indigo-600" id="profileGender">غير محدد</div>
+                    <div class="stat-label text-sm text-gray-500">الجنس</div>
+                </div>
+                <div class="stat-item p-4 bg-gray-100 rounded-lg text-center">
+                    <div class="stat-value text-2xl font-bold text-indigo-600" id="profileAge">غير محدد</div>
+                    <div class="stat-label text-sm text-gray-500">العمر</div>
+                </div>
+                <div class="stat-item p-4 bg-gray-100 rounded-lg text-center">
+                    <div class="stat-value text-2xl font-bold text-indigo-600" id="profileCountry">غير محدد</div>
+                    <div class="stat-label text-sm text-gray-500">البلد</div>
                 </div>
             </div>
             
@@ -770,6 +854,25 @@
                 <textarea id="profileBio" class="input-field" rows="3" placeholder="اكتب شيئاً عن نفسك..."></textarea>
             </div>
             
+            <div style="margin-bottom: 16px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">الجنس:</label>
+                <select id="profileGenderEdit" class="input-field">
+                    <option value="غير محدد">غير محدد</option>
+                    <option value="ذكر">ذكر</option>
+                    <option value="أنثى">أنثى</option>
+                </select>
+            </div>
+            
+            <div style="margin-bottom: 16px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">العمر:</label>
+                <input type="number" id="profileAgeEdit" class="input-field" min="1" max="120">
+            </div>
+            
+            <div style="margin-bottom: 16px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 600;">البلد:</label>
+                <input type="text" id="profileCountryEdit" class="input-field" placeholder="مثال: السعودية">
+            </div>
+
             <div style="margin-bottom: 16px;">
                 <label style="display: block; margin-bottom: 8px; font-weight: 600;">الاسم:</label>
                 <input type="text" id="profileNameEdit" class="input-field">
