@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>شات العزاوي - تطبيق دردشة متكامل</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- START: FIREBASE SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -16,7 +15,7 @@
     <style>
         /* All your existing CSS styles go here. */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100% ); min-height: 100vh; overflow-x: hidden; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%  ); min-height: 100vh; overflow-x: hidden; }
         .container { max-width: 1400px; margin: 0 auto; padding: 10px; }
         @media (min-width: 768px) { .container { padding: 20px; } }
         .card { background: white; border-radius: 16px; padding: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); margin-bottom: 20px; }
@@ -83,8 +82,13 @@
         }
         .rooms-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjust minmax for better sizing */
             gap: 20px;
+        }
+        @media (min-width: 768px) {
+            .rooms-grid {
+                grid-template-columns: repeat(2, 1fr); /* Two columns on larger screens */
+            }
         }
         
         /* إصلاح مشاكل عرض الرسائل */
@@ -131,9 +135,52 @@
         .modal.active { display: flex; }
         .modal-content { background: white; border-radius: 16px; padding: 24px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; }
         @media (min-width: 768px) { .modal-content { padding: 32px; } }
-        .input-field { width: 100%; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; margin-bottom: 16px; transition: border-color 0.3s; }
-        .input-field:focus { outline: none; border-color: #667eea; }
-        .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px; text-align: center; }
+        .input-field { width: 100%; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; margin-bottom: 16px; transition: border-color 0.3s; }.input-field:focus { outline: none; border-color: var(--primary-color); }
+        
+        /* Scrolling Ads Banner */
+        .ads-banner-container {
+            width: 100%;
+            overflow: hidden;
+            background-color: #f8f8f8;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+            height: 40px; /* Fixed height for the banner */
+        }
+        .ads-banner {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            animation: scrollAds 30s linear infinite; /* Adjust duration as needed */
+        }
+        .ads-banner-item {
+            padding: 0 20px;
+            font-size: 1.1em;
+            color: #333;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .ads-banner-item::before {
+            content: '📢'; /* Speaker emoji */
+            font-size: 1.2em;
+        }
+        .ads-separator {
+            width: 2px;
+            height: 70%;
+            background-color: #ccc;
+            margin: 0 15px;
+        }
+        @keyframes scrollAds {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }     .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px; text-align: center; }
         @media (min-width: 768px) { .stat-card { padding: 24px; } }
         .tab-button { padding: 10px 16px; border: none; background: transparent; cursor: pointer; border-bottom: 3px solid transparent; font-weight: 600; transition: all 0.3s; font-size: 14px; }
         @media (min-width: 768px) { .tab-button { padding: 12px 24px; font-size: 16px; } }
@@ -145,7 +192,7 @@
         @media (min-width: 768px) { .grid-cols-2 { grid-template-columns: repeat(2, 1fr); } }
         .grid-cols-4 { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
         @media (min-width: 768px) { .grid-cols-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); } }
-        .main-header { background: url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%D9%85%D9%84%D8%A7%D8%B0-%D8%A7%D9%84%D8%B0%D9%87%D8%A8%D9%8A3-%D8%A7%D9%84%D9%85%D8%AA%D8%AD%D8%B1%D9%83-1-tkGUJkQJVKQoTmRIFbMFUpI8gCzfkJ.gif' ) center/cover; padding: 16px 20px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); position: relative; }
+        .main-header { background: url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%D9%85%D9%84%D8%A7%D8%B0-%D8%A7%D9%84%D8%B0%D9%87%D8%A8%D9%8A3-%D8%A7%D9%84%D9%85%D8%AA%D8%AD%D8%B1%D9%83-1-tkGUJkQJVKQoTmRIFbMFUpI8gCzfkJ.gif'  ) center/cover; padding: 16px 20px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); position: relative; }
         .main-header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255, 255, 255, 0.85); border-radius: 16px; z-index: 0; }
         .main-header > * { position: relative; z-index: 1; }
         @media (min-width: 768px) { .main-header { padding: 20px 32px; } }
@@ -251,6 +298,26 @@
         @keyframes adminBadgeGlow { 0%, 100% { box-shadow: 0 0 10px rgba(255, 107, 107, 0.5); } 50% { box-shadow: 0 0 20px rgba(255, 107, 107, 0.8); } }
         .moderator-badge { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); animation: moderatorBadgeGlow 2s ease-in-out infinite; }
         @keyframes moderatorBadgeGlow { 0%, 100% { box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); } 50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.8); } }
+
+        .vip-bronze-badge {
+            display: inline-block;
+            margin-right: 5px;
+            font-size: 1.2em;
+            animation: bronzePulse 1.5s infinite alternate, bronzeColorChange 3s infinite linear;
+            vertical-align: middle;
+            color: #cd7f32; /* Default bronze color */
+        }
+        @keyframes bronzePulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+        @keyframes bronzeColorChange {
+            0% { color: #cd7f32; }
+            25% { color: #b0651a; }
+            50% { color: #a65d1a; }
+            75% { color: #b56e2a; }
+            100% { color: #cd7f32; }
+        }
         .banned-badge { background: #6b7280; animation: none; }
         table { width: 100%; border-collapse: collapse; overflow-x: auto; display: block; }
         @media (min-width: 768px) { table { display: table; } }
@@ -346,7 +413,8 @@
         .coins-display { 
             display: inline-flex; 
             align-items: center; 
-            background: linear-gradient(135deg, #ffd700, #ffed4e); 
+            background: linear-gradient(135deg, #ffd700, #ff
+ed4e); 
             padding: 4px 8px; 
             border-radius: 12px; 
             font-size: 12px; 
@@ -599,7 +667,7 @@
 </head>
 <body>
     <!-- Login Modal -->
-    <div id="loginModal" class="modal">
+    <div id="loginModal" class="modal active">
         <div class="modal-content">
             <h2 style="text-align: center; margin-bottom: 24px; font-size: 28px; font-weight: bold; color: #667eea;">مرحباً بك في شات العزاوي</h2>
             <div style="text-align: center; margin-bottom: 24px;">
@@ -625,18 +693,21 @@
 
     <!-- Main Container -->
     <div class="container">
+
         <!-- Main Header -->
         <div class="main-header">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
                 <div class="nav-links">
                     <a href="#" class="nav-link" onclick="showRooms()">الغرف</a>
-                    <a href="#" class="nav-link" onclick="showProfile()">الملف الشخصي</a>
+                    <a href="#" class="nav-link" onclick="showProfileModal()">الملف الشخصي</a>
                     <a href="#" class="nav-link" onclick="showPrivateMessages()">الرسائل الخاصة</a>
+                    <a href="#" class="nav-link" onclick="showAdminContactModal()">راسل الإدارة</a>
                     <a href="#" class="nav-link hidden" id="adminBtn" onclick="showAdmin()">الإدارة</a>
                 </div>
                 <h1 class="header-title">شات العزاوي</h1>
             </div>
-        </div>
+          </div>
+
 
         <!-- Secondary Header -->
         <div id="secondaryHeader" class="header hidden">
@@ -650,6 +721,11 @@
                 </div>
             </div>
             <button id="logoutBtn" onclick="logout()" class="btn btn-danger hidden">تسجيل الخروج</button>
+        </div>
+
+
+        <div id="ads-banner-container" class="ads-banner-container hidden">
+            <div id="ads-banner" class="ads-banner"></div>
         </div>
 
         <!-- Rooms View -->
@@ -667,7 +743,7 @@
                     <button onclick="goBack()" class="btn btn-primary">← رجوع</button>
                     <div>
                         <h3 id="chatRoomName" class="title-main"></h3>
-                        <p id="chatRoomDesc" style="color: #6b7280; font-size: 14px;"></p>
+                        <p id="chatRoomDesc" class="hidden" style="color: #6b7280; font-size: 14px;"></p>
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 12px;">
@@ -681,14 +757,13 @@
             </div>
             
             <div id="adminNotificationContainer"></div>
+            <div id="room-users-online" class="hidden" style="padding: 10px; background-color: #f0f0f0; border-bottom: 1px solid #ddd;">
+                <span style="font-weight: bold;">المتواجدون الآن:</span> <span id="online-users-list"></span>
+            </div>
             
             <div class="messages-container" id="messagesContainer"></div>
             
             <div class="message-input-container">
-                <div class="file-upload">
-                    <input type="file" id="avatarUpload" accept="image/*" onchange="handleAvatarUpload(event)">
-                    <div class="file-upload-btn">📷</div>
-                </div>
                 <button onclick="toggleEmojiPicker()" class="btn btn-primary">😊</button>
                 <input type="text" id="messageInput" placeholder="اكتب رسالتك هنا..." style="flex: 1; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px;">
                 <button onclick="sendMessage()" class="btn btn-primary">إرسال</button>
@@ -731,80 +806,116 @@
                     <button class="tab-button" onclick="switchAdminTab(event, 'messages')">إدارة الرسائل</button>
                     <button class="tab-button" onclick="switchAdminTab(event, 'notifications')">إرسال تنبيه</button>
                     <button class="tab-button" onclick="switchAdminTab(event, 'coins')">إدارة الكوينز</button>
+                    <button class="tab-button" onclick="switchAdminTab(event, 'header-settings')">إعدادات الهيدر</button>
+                    <button class="tab-button" onclick="switchAdminTab(event, 'ads')">إدارة الإعلانات</button>
                 </div>
 
-                <!-- Users Tab -->
-                <div id="usersTab" class="admin-tab">
-                    <div style="overflow-x: auto;">
-                        <table id="usersTable">
-                            <thead>
-                                <tr>
-                                    <th>الصورة</th>
-                                    <th>الاسم</th>
-                                    <th>البريد الإلكتروني</th>
-                                    <th>الدور</th>
-                                    <th>الحالة</th>
-                                    <th>الكوينز</th>
-                                    <th>الإجراءات</th>
-                                </tr>
-                            </thead>
-                            <tbody id="usersTableBody"></tbody>
-                        </table>
+                <div class="admin-tabs-content">
+                    <!-- Users Tab -->
+                    <div id="usersTab" class="admin-tab">
+                        <div style="overflow-x: auto;">
+                            <table id="usersTable">
+                                <thead>
+                                    <tr>
+                                        <th>الصورة</th>
+                                        <th>الاسم</th>
+                                        <th>البريد الإلكتروني</th>
+                                        <th>الدور</th>
+                                        <th>الحالة</th>
+                                        <th>الكوينز</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTableBody"></tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Rooms Tab -->
-                <div id="roomsTab" class="admin-tab hidden">
-                    <button onclick="showAddRoomModal()" class="btn btn-success" style="margin-bottom: 16px;">إضافة غرفة جديدة</button>
-                    <div style="overflow-x: auto;">
-                        <table id="roomsTable">
-                            <thead>
-                                <tr>
-                                    <th>الصورة</th>
-                                    <th>اسم الغرفة</th>
-                                    <th>الوصف</th>
-                                    <th>عدد الرسائل</th>
-                                    <th>مخفية</th>
-                                    <th>الإجراءات</th>
-                                </tr>
-                            </thead>
-                            <tbody id="roomsTableBody"></tbody>
-                        </table>
+                    <!-- Rooms Tab -->
+                    <div id="roomsTab" class="admin-tab hidden">
+                        <button onclick="showAddRoomModal()" class="btn btn-success" style="margin-bottom: 16px;">إضافة غرفة جديدة</button>
+                        <div style="overflow-x: auto;">
+                            <table id="roomsTable">
+                                <thead>
+                                    <tr>
+                                        <th>الصورة</th>
+                                        <th>اسم الغرفة</th>
+                                        <th>الوصف</th>
+                                        <th>عدد الرسائل</th>
+                                        <th>مخفية</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="roomsTableBody"></tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Messages Tab -->
-                <div id="messagesTab" class="admin-tab hidden">
-                    <div style="margin-bottom: 16px;">
-                        <select id="roomSelect" class="input-field" onchange="loadRoomMessages()">
-                            <option value="">اختر غرفة</option>
-                        </select>
+                    <!-- Messages Tab -->
+                    <div id="messagesTab" class="admin-tab hidden">
+                        <div style="margin-bottom: 16px;">
+                            <select id="roomSelect" class="input-field" onchange="loadRoomMessages()">
+                                <option value="">اختر غرفة</option>
+                            </select>
+                        </div>
+                        <div id="roomMessagesContainer">
+                            <p style="text-align: center; color: #6b7280;">اختر غرفة لعرض الرسائل</p>
+                        </div>
                     </div>
-                    <div id="roomMessagesContainer">
-                        <p style="text-align: center; color: #6b7280;">اختر غرفة لعرض الرسائل</p>
-                    </div>
-                </div>
 
-                <!-- Notifications Tab -->
-                <div id="notificationsTab" class="admin-tab hidden">
-                    <div style="max-width: 500px; margin: 0 auto;">
-                        <h3 style="margin-bottom: 16px;">إرسال تنبيه لجميع المستخدمين</h3>
-                        <textarea id="notificationText" placeholder="اكتب التنبيه هنا..." class="input-field" rows="4"></textarea>
-                        <button onclick="sendGlobalNotification()" class="btn btn-primary" style="width: 100%;">إرسال التنبيه</button>
+                    <!-- Notifications Tab -->
+                    <div id="notificationsTab" class="admin-tab hidden">
+                        <div style="max-width: 500px; margin: 0 auto;">
+                            <h3 style="margin-bottom: 16px;">إرسال تنبيه لجميع المستخدمين</h3>
+                            <textarea id="notificationText" placeholder="اكتب التنبيه هنا..." class="input-field" rows="4"></textarea>
+                            <button onclick="sendGlobalNotification()" class="btn btn-primary" style="width: 100%;">إرسال التنبيه</button>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Coins Tab -->
-                <div id="coinsTab" class="admin-tab hidden">
-                    <div style="max-width: 500px; margin: 0 auto;">
-                        <h3 style="margin-bottom: 16px;">إرسال كوينز للمستخدمين</h3>
-                        <select id="userSelect" class="input-field">
-                            <option value="">اختر مستخدم</option>
-                        </select>
-                        <input type="number" id="coinsAmount" placeholder="عدد الكوينز" class="input-field" min="1">
-                        <button onclick="sendCoins()" class="btn btn-primary" style="width: 100%;">إرسال الكوينز</button>
+                    <!-- Coins Tab -->
+                    <div id="coinsTab" class="admin-tab hidden">
+                        <div style="max-width: 500px; margin: 0 auto;">
+                            <h3 style="margin-bottom: 16px;">إرسال كوينز للمستخدمين</h3>
+                            <select id="userSelect" class="input-field">
+                                <option value="">اختر مستخدم</option>
+                            </select>
+                            <input type="number" id="coinsAmount" placeholder="عدد الكوينز" class="input-field" min="1">
+                            <button onclick="sendCoins()" class="btn btn-primary" style="width: 100%;">إرسال الكوينز</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Header Settings Tab -->
+                    <div id="header-settingsTab" class="admin-tab hidden">
+                        <h3 class="title-section" style="margin-bottom: 1rem;">إعدادات الهيدر</h3>
+                        <div style="margin-bottom: 1rem;">
+                            <label for="header-image-url" style="display: block; color: #4a5568; font-size: 0.875rem; font-weight: bold; margin-bottom: 0.5rem;">رابط صورة الهيدر:</label>
+                            <input type="text" id="header-image-url" class="input-field" placeholder="أدخل رابط صورة الهيدر هنا...">
+                            <button id="save-header-image-btn" class="btn btn-primary" onclick="updateHeaderImage()">حفظ صورة الهيدر</button>
+                        </div>
+                    </div>
+
+                    <!-- Ads Management Tab -->
+                    <div id="adsTab" class="admin-tab hidden">
+                        <h3 class="title-section" style="margin-bottom: 1rem;">إدارة الإعلانات</h3>
+                        <div style="margin-bottom: 1rem;">
+                            <input type="text" id="ad-text-input" class="input-field" placeholder="أدخل نص الإعلان هنا...">
+                            <button id="add-ad-btn" class="btn btn-primary" onclick="addAd()">إضافة إعلان</button>
+                        </div>
+                        <div id="ads-list"></div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Contact Modal -->
+    <div id="admin-contact-modal" class="modal">
+        <div class="modal-content">
+            <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">راسل الإدارة</h2>
+            <textarea id="admin-contact-message" class="input-field" style="height: 8rem;" placeholder="اكتب رسالتك هنا..."></textarea>
+            <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+                <button class="btn btn-danger" onclick="closeAdminContactModal()">إلغاء</button>
+                <button class="btn btn-primary" onclick="sendAdminContactMessage()">إرسال</button>
             </div>
         </div>
     </div>
@@ -817,35 +928,23 @@
             <div class="profile-header">
                 <img id="profileAvatar" class="profile-avatar" src="">
                 <h3 id="profileName" style="font-size: 24px; font-weight: bold; margin-bottom: 8px;"></h3><span id="profileVipBadge" class="vip-badge hidden">👑</span>
-                <p id="profileEmail" class="text-gray-600 mb-2"></p>
-                <div id="profileEmailVisibility" class="text-sm text-gray-500 mb-4"></div>
+                <p id="profileEmail" style="color: #4a5568; margin-bottom: 0.5rem;"></p>
+                <div id="profileEmailVisibility" style="font-size: 0.875rem; color: #718096; margin-bottom: 1rem;"></div>
                 <div id="profileRole" class="user-badge" style="margin-top: 8px;"></div>
             </div>
             
-            <div class="profile-stats grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <div class="stat-item p-4 bg-gray-100 rounded-lg text-center">
-                    <div class="stat-value text-2xl font-bold text-indigo-600" id="profileCoins">0</div>
-                    <div class="stat-label text-sm text-gray-500">الكوينز</div>
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="profileCoins">0</div>
+                    <div class="stat-label">الكوينز</div>
                 </div>
-                <div class="stat-item p-4 bg-gray-100 rounded-lg text-center">
-                    <div class="stat-value text-2xl font-bold text-indigo-600" id="profileMessages">0</div>
-                    <div class="stat-label text-sm text-gray-500">الرسائل</div>
+                <div class="stat-item">
+                    <div class="stat-value" id="profileMessages">0</div>
+                    <div class="stat-label">الرسائل</div>
                 </div>
-                <div class="stat-item p-4 bg-gray-100 rounded-lg text-center">
-                    <div class="stat-value text-2xl font-bold text-indigo-600" id="profileJoinDate">-</div>
-                    <div class="stat-label text-sm text-gray-500">تاريخ الانضمام</div>
-                </div>
-                <div class="stat-item p-4 bg-gray-100 rounded-lg text-center">
-                    <div class="stat-value text-2xl font-bold text-indigo-600" id="profileGender">غير محدد</div>
-                    <div class="stat-label text-sm text-gray-500">الجنس</div>
-                </div>
-                <div class="stat-item p-4 bg-gray-100 rounded-lg text-center">
-                    <div class="stat-value text-2xl font-bold text-indigo-600" id="profileAge">غير محدد</div>
-                    <div class="stat-label text-sm text-gray-500">العمر</div>
-                </div>
-                <div class="stat-item p-4 bg-gray-100 rounded-lg text-center">
-                    <div class="stat-value text-2xl font-bold text-indigo-600" id="profileCountry">غير محدد</div>
-                    <div class="stat-label text-sm text-gray-500">البلد</div>
+                <div class="stat-item">
+                    <div class="stat-value" id="profileJoinDate">-</div>
+                    <div class="stat-label">تاريخ الانضمام</div>
                 </div>
             </div>
             
@@ -854,25 +953,6 @@
                 <textarea id="profileBio" class="input-field" rows="3" placeholder="اكتب شيئاً عن نفسك..."></textarea>
             </div>
             
-            <div style="margin-bottom: 16px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 600;">الجنس:</label>
-                <select id="profileGenderEdit" class="input-field">
-                    <option value="غير محدد">غير محدد</option>
-                    <option value="ذكر">ذكر</option>
-                    <option value="أنثى">أنثى</option>
-                </select>
-            </div>
-            
-            <div style="margin-bottom: 16px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 600;">العمر:</label>
-                <input type="number" id="profileAgeEdit" class="input-field" min="1" max="120">
-            </div>
-            
-            <div style="margin-bottom: 16px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 600;">البلد:</label>
-                <input type="text" id="profileCountryEdit" class="input-field" placeholder="مثال: السعودية">
-            </div>
-
             <div style="margin-bottom: 16px;">
                 <label style="display: block; margin-bottom: 8px; font-weight: 600;">الاسم:</label>
                 <input type="text" id="profileNameEdit" class="input-field">
@@ -949,7 +1029,7 @@
             <div id="privateMessagesContainer">
                 <p style="text-align: center; color: #6b7280;">لا توجد رسائل خاصة</p>
             </div>
-            <button onclick="closePrivateMessagesModal()" class="btn" style="background: #6b7280; color: white; width: 100%;">إغلاق</button>
+            <button onclick="closePrivateMessagesModal()" class="btn" style="background: #6b7280; color: white; width: 100%; margin-top: 1rem;">إغلاق</button>
         </div>
     </div>
 
@@ -958,13 +1038,12 @@
         // FIREBASE CONFIGURATION
         // =================================================================
         const firebaseConfig = {
-            apiKey: "AIzaSyAyn2M8LGYpCFFMY1jsVzc80f0H9mVvh6Q",
-            authDomain: "chate-2d1d1.firebaseapp.com",
-            projectId: "chate-2d1d1",
-            storageBucket: "chate-2d1d1.firebasestorage.app",
-            messagingSenderId: "34207834349",
-            appId: "1:34207834349:web:3c4c5971f3131ca1536ce4",
-            measurementId: "G-SKTRYF395G"
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
         };
 
         firebase.initializeApp(firebaseConfig);
@@ -986,14 +1065,10 @@
         // AUTHENTICATION
         // =================================================================
 
-        // Monitor authentication state changes
         auth.onAuthStateChanged(user => {
-            console.log('Auth state changed:', user);
             if (user) {
-                // User is signed in
                 handleAuthSuccess(user);
             } else {
-                // User is signed out
                 currentUser = null;
                 showLogin();
             }
@@ -1002,8 +1077,7 @@
         async function loginWithGoogle() {
             try {
                 const provider = new firebase.auth.GoogleAuthProvider();
-                const result = await auth.signInWithPopup(provider);
-                // handleAuthSuccess will be called automatically by onAuthStateChanged
+                await auth.signInWithPopup(provider);
             } catch (error) {
                 console.error("Error during Google login: ", error);
                 alert('خطأ في تسجيل الدخول: ' + error.message);
@@ -1013,15 +1087,10 @@
         async function loginWithEmail() {
             const email = document.getElementById('emailInput').value.trim();
             const password = document.getElementById('passwordInput').value;
-            
-            if (!email || !password) {
-                alert('الرجاء إدخال البريد الإلكتروني وكلمة المرور');
-                return;
-            }
-            
+            if (!email || !password) return alert('
+الرجاء إدخال البريد الإلكتروني وكلمة المرور');
             try {
                 await auth.signInWithEmailAndPassword(email, password);
-                // handleAuthSuccess will be called automatically by onAuthStateChanged
             } catch (error) {
                 console.error("Error during email login: ", error);
                 alert('خطأ في تسجيل الدخول: ' + error.message);
@@ -1031,20 +1100,11 @@
         async function registerWithEmail() {
             const email = document.getElementById('emailInput').value.trim();
             const password = document.getElementById('passwordInput').value;
-            
-            if (!email || !password) {
-                alert('الرجاء إدخال البريد الإلكتروني وكلمة المرور');
-                return;
-            }
-            
-            if (password.length < 6) {
-                alert('كلمة المرور يجب أن تكون 6 أحرف على الأقل');
-                return;
-            }
+            if (!email || !password) return alert('الرجاء إدخال البريد الإلكتروني وكلمة المرور');
+            if (password.length < 6) return alert('كلمة المرور يجب أن تكون 6 أحرف على الأقل');
             
             try {
                 await auth.createUserWithEmailAndPassword(email, password);
-                // handleAuthSuccess will be called automatically by onAuthStateChanged
             } catch (error) {
                 console.error("Error during email registration: ", error);
                 alert('خطأ في إنشاء الحساب: ' + error.message);
@@ -1053,20 +1113,16 @@
 
         async function handleAuthSuccess(user) {
             try {
-                console.log('Handling auth success for user:', user.uid);
-                
-                // Get or create user document
-                const userDoc = await db.collection('users').doc(user.uid).get();
+                const userDocRef = db.collection('users').doc(user.uid);
+                const userDoc = await userDocRef.get();
                 
                 if (userDoc.exists) {
-                    // Update existing user
                     currentUser = { id: user.uid, ...userDoc.data() };
-                    await db.collection('users').doc(user.uid).update({
+                    await userDocRef.update({
                         status: 'online',
                         lastSeen: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 } else {
-                    // Create new user
                     const userData = {
                         id: user.uid,
                         name: user.displayName || user.email.split('@')[0],
@@ -1076,21 +1132,20 @@
                         status: 'online',
                         banned: false,
                         coins: 0,
-                        goldenUntil: null,
                         bio: '',
                         blockedUsers: [],
                         messageCount: 0,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp( ),
                         lastSeen: firebase.firestore.FieldValue.serverTimestamp()
                     };
-                    
-                    await db.collection('users').doc(user.uid).set(userData);
+                    await userDocRef.set(userData);
                     currentUser = userData;
                 }
                 
-                console.log('Current user set:', currentUser);
                 updateHeader();
                 showRooms();
+                listenForNotifications();
+                loadAds();
                 
             } catch (error) {
                 console.error("Error handling auth success: ", error);
@@ -1107,7 +1162,6 @@
                     });
                 }
                 await auth.signOut();
-                // showLogin will be called automatically by onAuthStateChanged
             } catch (error) {
                 console.error("Error during logout: ", error);
                 alert('خطأ في تسجيل الخروج: ' + error.message);
@@ -1129,89 +1183,63 @@
         function showLogin() {
             hideAllViews();
             document.getElementById('loginModal').classList.add('active');
-            // Clear input fields
             document.getElementById('emailInput').value = '';
             document.getElementById('passwordInput').value = '';
         }
 
         function updateHeader() {
-            if (currentUser) {
-                // Update main header elements
-                const avatarElements = ['userAvatarBtn', 'userAvatarBtn2'];
-                const nameElements = ['userNameDisplay', 'userNameDisplay2'];
-                const coinsElements = ['userCoinsDisplay', 'userCoinsDisplay2'];
-                const coinsCountElements = ['userCoinsCount', 'userCoinsCount2'];
-                
-                avatarElements.forEach(id => {
-                    const element = document.getElementById(id);
-                    if (element) {
-                        element.src = currentUser.avatar;
-                        element.classList.remove('hidden');
-                    }
-                });
-                
-                nameElements.forEach(id => {
-                    const element = document.getElementById(id);
-                    if (element) {
-                        element.textContent = currentUser.name;
-                    }
-                });
-                
-                // Show coins if user has any
-                if (currentUser.coins > 0) {
-                    coinsElements.forEach(id => {
-                        const element = document.getElementById(id);
-                        if (element) {
-                            element.classList.remove('hidden');
-                        }
-                    });
-                    
-                    coinsCountElements.forEach(id => {
-                        const element = document.getElementById(id);
-                        if (element) {
-                            element.textContent = currentUser.coins;
-                        }
-                    });
+            if (!currentUser) return;
+            
+            const avatarElements = ['userAvatarBtn', 'userAvatarBtn2'];
+            const nameElements = ['userNameDisplay', 'userNameDisplay2'];
+            const coinsElements = ['userCoinsDisplay', 'userCoinsDisplay2'];
+            const coinsCountElements = ['userCoinsCount', 'userCoinsCount2'];
+            
+            avatarElements.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.src = currentUser.avatar;
+                    el.classList.remove('hidden');
                 }
-                
-                document.getElementById('logoutBtn').classList.remove('hidden');
-                
-                if (currentUser.role === 'admin') {
-                    document.getElementById('adminBtn').classList.remove('hidden');
-                }
+            });
+            
+            nameElements.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = currentUser.name;
+            });
+            
+            if (currentUser.coins > 0) {
+                coinsElements.forEach(id => document.getElementById(id)?.classList.remove('hidden'));
+                coinsCountElements.forEach(id => document.getElementById(id).textContent = currentUser.coins);
             } else {
-                document.getElementById('userAvatarBtn').classList.add('hidden');
-                document.getElementById('userNameDisplay').textContent = '';
-                document.getElementById('logoutBtn').classList.add('hidden');
-                document.getElementById('adminBtn').classList.add('hidden');
+                 coinsElements.forEach(id => document.getElementById(id)?.classList.add('hidden'));
             }
+            
+            document.getElementById('logoutBtn').classList.remove('hidden');
+            document.getElementById('adminBtn').classList.toggle('hidden', currentUser.role !== 'admin');
         }
 
         function showRooms() {
             hideAllViews();
             document.getElementById('roomsView').classList.remove('hidden');
+            document.getElementById('secondaryHeader').classList.remove('hidden');
             renderRooms();
         }
 
         function renderRooms() {
             db.collection('rooms').onSnapshot(snapshot => {
                 const roomsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                
-                // Filter hidden rooms for non-admin users
-                const filteredRooms = roomsData.filter(room => {
-                    if (room.hidden && currentUser.role !== 'admin') {
-                        return false;
-                    }
-                    return true;
-                });
+                const filteredRooms = roomsData.filter(room => !room.hidden || (currentUser && currentUser.role === 'admin'));
                 
                 const grid = document.getElementById('roomsGrid');
                 grid.innerHTML = filteredRooms.map(room => `
                     <div class="room-card ${room.hidden ? 'hidden-room' : ''}" onclick="joinRoom('${room.id}')">
                         <img src="${room.image}" alt="${room.name}">
-                        <div style="padding: 20px;">
-                            <h3 style="font-size: 18px; font-weight: bold; margin-bottom: 8px;">${room.name}</h3>
-                            <p style="color: #6b7280; font-size: 14px; margin-bottom: 12px;">${room.description}</p>
+                        <div class="room-card-content">
+                            <div>
+                                <h3 class="room-card-title">${room.name}</h3>
+                                <p class="room-card-description">${room.description}</p>
+                            </div>
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <span style="color: #667eea; font-weight: 600; font-size: 14px;">💬 ${room.messageCount || 0} رسالة</span>
                                 <span style="color: #10b981; font-weight: 600; font-size: 14px;">انضم الآن</span>
@@ -1233,9 +1261,10 @@
                     currentRoom = { id: doc.id, ...doc.data() };
                     document.getElementById('chatRoomName').textContent = currentRoom.name;
                     document.getElementById('chatRoomDesc').textContent = currentRoom.description;
+                    document.getElementById('chatRoomDesc').classList.remove('hidden');
                     if (currentUser.role === 'admin') showAdminNotification();
                     renderMessages();
-                    updateHeader(); // Update header for chat view
+                    updateHeader();
                 } else {
                     alert("الغرفة غير موجودة.");
                     showRooms();
@@ -1252,11 +1281,13 @@
             renderAdminRooms();
             loadRoomSelectOptions();
             loadUserSelectOptions();
+            renderAdsManagement();
         }
 
         function goBack() {
             if (messagesListener) messagesListener();
             if (usersListener) usersListener();
+            currentRoom = null;
             showRooms();
         }
 
@@ -1268,23 +1299,16 @@
             const input = document.getElementById('messageInput');
             const content = input.value.trim();
             if (!content || !currentRoom || !currentUser) return;
-            if (currentUser.banned) {
-                alert('عذراً، تم حظرك من إرسال الرسائل');
-                return;
-            }
+            if (currentUser.banned) return alert('عذراً، تم حظرك من إرسال الرسائل');
+            
             input.value = '';
             try {
-                // تحديد ما إذا كانت الرسالة ذهبية
-                const isGolden = currentUser.goldenUntil && new Date(currentUser.goldenUntil.toDate()) > new Date();
-                
                 const messageData = {
                     content: content,
                     userId: currentUser.id,
                     userName: currentUser.name,
                     userAvatar: currentUser.avatar,
                     role: currentUser.role || 'user',
-                    isGolden: isGolden,
-                    userCoins: currentUser.coins || 0,
                     likes: [],
                     likesCount: 0,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
@@ -1292,22 +1316,18 @@
                 
                 await db.collection('rooms').doc(currentRoom.id).collection('messages').add(messageData);
                 
-                // Update room message count
-                const roomRef = db.collection('rooms').doc(currentRoom.id);
-                await roomRef.update({
+                await db.collection('rooms').doc(currentRoom.id).update({
                     messageCount: firebase.firestore.FieldValue.increment(1)
                 });
                 
-                // Update user message count
                 await db.collection('users').doc(currentUser.id).update({
                     messageCount: firebase.firestore.FieldValue.increment(1)
                 });
-                
                 currentUser.messageCount = (currentUser.messageCount || 0) + 1;
                 
             } catch (error) {
                 console.error("Error sending message: ", error);
-                input.value = content;
+                input.value = content; // Restore message on error
             }
         }
 
@@ -1315,6 +1335,7 @@
             const container = document.getElementById('messagesContainer');
             if (!currentRoom) return;
             if (messagesListener) messagesListener();
+
             messagesListener = db.collection('rooms').doc(currentRoom.id).collection('messages')
                 .orderBy('timestamp', 'asc')
                 .limitToLast(100)
@@ -1323,42 +1344,30 @@
                         const msg = { id: doc.id, ...doc.data() };
                         const isSent = msg.userId === currentUser.id;
                         
-                        // تحديد ما إذا كانت الرسالة ذهبية
-                        const isGolden = msg.isGolden || false;
-                        let messageClass = msg.role === 'admin' ? 'message-admin' : (isSent ? 'message-sent' : 'message-received');
-                        if (isGolden) {
-                            messageClass += ' message-golden';
+                        if (currentUser.blockedUsers && currentUser.blockedUsers.includes(msg.userId) && !isSent) {
+                            return ''; // Do not render messages from blocked users
                         }
+
+                        let messageClass = isSent ? 'message-sent' : 'message-received';
+                        if (msg.role === 'admin') messageClass = 'message-admin';
                         
                         const roleIcon = msg.role === 'admin' ? '👑' : msg.role === 'moderator' ? '⭐' : '';
-                        const timestamp = msg.timestamp ? new Date(msg.timestamp.toDate()).toLocaleTimeString('ar-SA') : '...';
+                        const timestamp = msg.timestamp ? new Date(msg.timestamp.toDate()).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' }) : '';
                         
-                        // استخدام الاسم والصورة الحاليين للمستخدم إذا كانت الرسالة من المستخدم الحالي
                         const displayName = isSent ? currentUser.name : msg.userName;
                         const displayAvatar = isSent ? currentUser.avatar : msg.userAvatar;
                         
-                        // إضافة أيقونة الكوينز إذا كان المستخدم يملك كوينز نشطة
-                        const coinsIcon = (isSent && currentUser.goldenUntil && new Date(currentUser.goldenUntil.toDate()) > new Date()) || 
-                                         (!isSent && msg.userCoins > 0) ? '<span class="golden-coin">🪙</span>' : '';
-                        
-                        // تحقق من الحظر
-                        const isBlocked = currentUser.blockedUsers && currentUser.blockedUsers.includes(msg.userId);
-                        if (isBlocked && !isSent) {
-                            return ''; // لا تعرض الرسائل المحظورة
-                        }
-                        
-                        // Check if user liked this message
                         const userLiked = msg.likes && msg.likes.includes(currentUser.id);
                         
                         return `
-                            <div class="message ${messageClass}" style="position: relative;">
+                            <div class="message ${messageClass}">
                                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                                    <img src="${displayAvatar}" class="avatar" style="width: 24px; height: 24px;" onclick="showUserProfile('${msg.userId}')">
+                                    <img src="${displayAvatar}" class="avatar" style="width: 24px; height: 24px; cursor: pointer;" onclick="showUserProfile('${msg.userId}')">
                                     <strong style="font-size: 14px; cursor: pointer;" onclick="showUserProfile('${msg.userId}')">${displayName}</strong>
-                                    ${coinsIcon}
                                     ${roleIcon ? `<span style="font-size: 12px;">${roleIcon}</span>` : ''}
                                 </div>
-                                <div>${msg.content}</div>
+                                <div>${msg.content.replace(/\n/g, '  
+')}</div>
                                 <div class="message-actions">
                                     <button class="like-btn ${userLiked ? 'liked' : ''}" onclick="toggleLike('${msg.id}')">
                                         ❤️ ${msg.likesCount || 0}
@@ -1367,8 +1376,8 @@
                                         💬 اقتباس
                                     </button>
                                 </div>
-                                <div style="font-size: 12px; opacity: 0.7; margin-top: 4px;">${timestamp}</div>
-                                ${!isSent && msg.userId !== currentUser.id ? `
+                                <div style="font-size: 12px; opacity: 0.7; margin-top: 4px; text-align: left;">${timestamp}</div>
+                                ${!isSent ? `
                                     <div class="message-options">
                                         <button class="options-btn" onclick="toggleMessageOptions(event, '${msg.userId}', '${displayName}')">⋯</button>
                                     </div>
@@ -1385,36 +1394,31 @@
                 }, error => console.error("Error fetching messages: ", error));
         }
 
-        // =================================================================
-        // MESSAGE INTERACTIONS
-        // =================================================================
-
         async function toggleLike(messageId) {
             if (!currentRoom || !currentUser) return;
+            const messageRef = db.collection('rooms').doc(currentRoom.id).collection('messages').doc(messageId);
             
             try {
-                const messageRef = db.collection('rooms').doc(currentRoom.id).collection('messages').doc(messageId);
-                const messageDoc = await messageRef.get();
-                
-                if (!messageDoc.exists) return;
-                
-                const messageData = messageDoc.data();
-                const likes = messageData.likes || [];
-                const userLiked = likes.includes(currentUser.id);
-                
-                if (userLiked) {
-                    // Remove like
-                    await messageRef.update({
-                        likes: firebase.firestore.FieldValue.arrayRemove(currentUser.id),
-                        likesCount: firebase.firestore.FieldValue.increment(-1)
-                    });
-                } else {
-                    // Add like
-                    await messageRef.update({
-                        likes: firebase.firestore.FieldValue.arrayUnion(currentUser.id),
-                        likesCount: firebase.firestore.FieldValue.increment(1)
-                    });
-                }
+                await db.runTransaction(async (transaction) => {
+                    const messageDoc = await transaction.get(messageRef);
+                    if (!messageDoc.exists) return;
+                    
+                    const messageData = messageDoc.data();
+                    const likes = messageData.likes || [];
+                    const userLiked = likes.includes(currentUser.id);
+                    
+                    if (userLiked) {
+                        transaction.update(messageRef, {
+                            likes: firebase.firestore.FieldValue.arrayRemove(currentUser.id),
+                            likesCount: firebase.firestore.FieldValue.increment(-1)
+                        });
+                    } else {
+                        transaction.update(messageRef, {
+                            likes: firebase.firestore.FieldValue.arrayUnion(currentUser.id),
+                            likesCount: firebase.firestore.FieldValue.increment(1)
+                        });
+                    }
+                });
             } catch (error) {
                 console.error('Error toggling like:', error);
             }
@@ -1422,22 +1426,18 @@
 
         function quoteMessage(content, userName) {
             const input = document.getElementById('messageInput');
-            const quotedText = `"${content}" - ${userName}\n\n`;
-            input.value = quotedText;
+            const quotedText = `> "${content}" - ${userName}\n\n`;
+            input.value = quotedText + input.value;
             input.focus();
         }
 
         async function deleteMessage(messageId) {
             if (!confirm('هل أنت متأكد من حذف هذه الرسالة؟')) return;
-            
             try {
                 await db.collection('rooms').doc(currentRoom.id).collection('messages').doc(messageId).delete();
-                
-                // Update room message count
                 await db.collection('rooms').doc(currentRoom.id).update({
                     messageCount: firebase.firestore.FieldValue.increment(-1)
                 });
-                
             } catch (error) {
                 console.error('Error deleting message:', error);
                 alert('حدث خطأ أثناء حذف الرسالة');
@@ -1455,47 +1455,40 @@
         async function showUserProfile(userId) {
             try {
                 const userDoc = await db.collection('users').doc(userId).get();
-                if (!userDoc.exists) {
-                    alert('المستخدم غير موجود');
-                    return;
-                }
+                if (!userDoc.exists) return alert('المستخدم غير موجود');
                 
                 const userData = userDoc.data();
                 currentProfileUserId = userId;
                 
-                // Update profile modal
                 document.getElementById('profileAvatar').src = userData.avatar;
                 document.getElementById('profileName').textContent = userData.name;
                 document.getElementById('profileEmail').textContent = userData.email;
                 document.getElementById('profileRole').textContent = getRoleText(userData.role);
-                document.getElementById('profileRole').className = `user-badge ${userData.role === 'admin' ? 'admin-badge' : userData.role === 'moderator' ? 'moderator-badge' : ''}`;
+                document.getElementById('profileRole').className = `user-badge ${getRoleClass(userData.role)}`;
                 document.getElementById('profileCoins').textContent = userData.coins || 0;
                 document.getElementById('profileMessages').textContent = userData.messageCount || 0;
                 document.getElementById('profileJoinDate').textContent = userData.createdAt ? new Date(userData.createdAt.toDate()).toLocaleDateString('ar-SA') : '-';
                 
-                // Show/hide edit fields based on whether it's current user
                 const isCurrentUser = userId === currentUser.id;
                 document.getElementById('profileBio').value = userData.bio || '';
                 document.getElementById('profileNameEdit').value = userData.name;
                 document.getElementById('profileBio').readOnly = !isCurrentUser;
                 document.getElementById('profileNameEdit').readOnly = !isCurrentUser;
                 
-                // Show/hide private message button
                 const privateMessageBtn = document.getElementById('privateMessageBtn');
-                if (!isCurrentUser && currentUser.coins > 0) {
+                privateMessageBtn.style.display = 'none';
+                if (!isCurrentUser) {
                     privateMessageBtn.style.display = 'block';
-                    privateMessageBtn.disabled = false;
-                } else if (!isCurrentUser && currentUser.coins === 0) {
-                    privateMessageBtn.style.display = 'block';
-                    privateMessageBtn.disabled = true;
-                    privateMessageBtn.textContent = 'عفواً، لا تملك كوينز لفتح الرسائل الخاصة';
-                } else {
-                    privateMessageBtn.style.display = 'none';
+                    if (currentUser.coins > 0) {
+                        privateMessageBtn.disabled = false;
+                        privateMessageBtn.textContent = 'إرسال رسالة خاصة (1 كوين)';
+                    } else {
+                        privateMessageBtn.disabled = true;
+                        privateMessageBtn.textContent = 'لا تملك كوينز كافية للرسائل الخاصة';
+                    }
                 }
                 
-                // Load avatar options
                 loadAvatarOptions();
-                
                 document.getElementById('profileModal').classList.add('active');
                 
             } catch (error) {
@@ -1507,6 +1500,7 @@
         function closeProfileModal() {
             document.getElementById('profileModal').classList.remove('active');
             currentProfileUserId = null;
+            selectedAvatar = null;
         }
 
         function loadAvatarOptions() {
@@ -1518,14 +1512,11 @@
                 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
                 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face'
             ];
-            
-            const container = document.getElementById('avatarOptions');
-            container.innerHTML = avatarOptions.map(avatar => `
-                <img src="${avatar}" class="avatar-option" onclick="selectAvatar('${avatar}')">
-            `).join('');
+            const container = document.getElementById('avatarOptions' );
+            container.innerHTML = avatarOptions.map(avatar => `<img src="${avatar}" class="avatar-option" onclick="selectAvatar(event, '${avatar}')">`).join('');
         }
 
-        function selectAvatar(avatar) {
+        function selectAvatar(event, avatar) {
             selectedAvatar = avatar;
             document.querySelectorAll('.avatar-option').forEach(img => img.classList.remove('selected'));
             event.target.classList.add('selected');
@@ -1534,20 +1525,15 @@
         async function handleProfileImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
-            
-            if (file.size > 5 * 1024 * 1024) { // 5MB limit
-                alert('حجم الصورة يجب أن يكون أقل من 5 ميجابايت');
-                return;
-            }
+            if (file.size > 5 * 1024 * 1024) return alert('حجم الصورة يجب أن يكون أقل من 5 ميجابايت');
             
             try {
-                const storageRef = storage.ref(`avatars/${currentUser.id}/${Date.now()}`);
+                const storageRef = storage.ref(`avatars/${currentUser.id}/${Date.now()}_${file.name}`);
                 const snapshot = await storageRef.put(file);
                 const downloadURL = await snapshot.ref.getDownloadURL();
                 
                 selectedAvatar = downloadURL;
                 document.getElementById('profileAvatar').src = downloadURL;
-                
                 showNotification('تم رفع الصورة بنجاح!');
                 
             } catch (error) {
@@ -1557,28 +1543,15 @@
         }
 
         async function updateProfile() {
-            if (currentProfileUserId !== currentUser.id) {
-                alert('لا يمكنك تعديل ملف شخصي آخر');
-                return;
-            }
+            if (currentProfileUserId !== currentUser.id) return alert('لا يمكنك تعديل ملف شخصي آخر');
             
             const newName = document.getElementById('profileNameEdit').value.trim();
             const newBio = document.getElementById('profileBio').value.trim();
-            
-            if (!newName) {
-                alert('الرجاء إدخال اسم');
-                return;
-            }
+            if (!newName) return alert('الرجاء إدخال اسم');
             
             try {
-                const updates = {
-                    name: newName,
-                    bio: newBio
-                };
-                
-                if (selectedAvatar) {
-                    updates.avatar = selectedAvatar;
-                }
+                const updates = { name: newName, bio: newBio };
+                if (selectedAvatar) updates.avatar = selectedAvatar;
                 
                 await db.collection('users').doc(currentUser.id).update(updates);
                 currentUser = { ...currentUser, ...updates };
@@ -1596,12 +1569,22 @@
         // ADMIN PANEL
         // =================================================================
 
-        function switchAdminTab(event, tab) {
+        let originalSwitchAdminTab = function(event, tab) {
             document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.admin-tab').forEach(t => t.classList.add('hidden'));
             event.target.classList.add('active');
             document.getElementById(tab + 'Tab').classList.remove('hidden');
-        }
+        };
+
+        // Override switchAdminTab to include header image loading
+        var switchAdminTab = function(event, tabName) {
+            originalSwitchAdminTab(event, tabName);
+            if (tabName === 'header-settings') {
+                loadHeaderImageUrl();
+            } else if (tabName === 'ads') {
+                renderAdsManagement();
+            }
+        };
 
         function updateAdminStats() {
             db.collection('users').onSnapshot(snap => {
@@ -1621,9 +1604,7 @@
             usersListener = db.collection('users').onSnapshot(snapshot => {
                 const tbody = document.getElementById('usersTableBody');
                 tbody.innerHTML = snapshot.docs.map(doc => {
-                    const user = doc.data();
-                    const roleText = getRoleText(user.role);
-                    const statusText = user.status === 'online' ? 'متصل' : 'غير متصل';
+                    const user = {id: doc.id, ...doc.data()};
                     const statusColor = user.status === 'online' ? '#10b981' : '#6b7280';
                     
                     return `
@@ -1631,13 +1612,13 @@
                             <td><img src="${user.avatar}" class="avatar"></td>
                             <td>${user.name}</td>
                             <td>${user.email}</td>
-                            <td><span class="user-badge ${user.role === 'admin' ? 'admin-badge' : user.role === 'moderator' ? 'moderator-badge' : ''}">${roleText}</span></td>
-                            <td><span style="color: ${statusColor}; font-weight: 600;">${statusText}</span></td>
+                            <td><span class="user-badge ${getRoleClass(user.role)}">${getRoleText(user.role)}</span></td>
+                            <td><span style="color: ${statusColor}; font-weight: 600;">${user.status === 'online' ? 'متصل' : 'غير متصل'}</span></td>
                             <td><span class="coins-display">${user.coins || 0} 🪙</span></td>
                             <td>
-                                ${user.role !== 'admin' ? `<button class="action-btn btn-promote" onclick="promoteUser('${doc.id}')">ترقية</button>` : ''}
-                                ${user.role === 'moderator' ? `<button class="action-btn btn-demote" onclick="demoteUser('${doc.id}')">تخفيض</button>` : ''}
-                                ${!user.banned ? `<button class="action-btn btn-ban" onclick="banUser('${doc.id}')">حظر</button>` : `<button class="action-btn btn-unban" onclick="unbanUser('${doc.id}')">إلغاء الحظر</button>`}
+                                ${user.role !== 'admin' ? `<button class="action-btn btn-promote" onclick="promoteUser('${user.id}')">ترقية</button>` : ''}
+                                ${user.role === 'moderator' ? `<button class="action-btn btn-demote" onclick="demoteUser('${user.id}')">تخفيض</button>` : ''}
+                                ${!user.banned ? `<button class="action-btn btn-ban" onclick="banUser('${user.id}')">حظر</button>` : `<button class="action-btn btn-unban" onclick="unbanUser('${user.id}')">إلغاء الحظر</button>`}
                             </td>
                         </tr>
                     `;
@@ -1672,8 +1653,7 @@
                 const select = document.getElementById('roomSelect');
                 select.innerHTML = '<option value="">اختر غرفة</option>';
                 snapshot.docs.forEach(doc => {
-                    const room = doc.data();
-                    select.innerHTML += `<option value="${doc.id}">${room.name}</option>`;
+                    select.innerHTML += `<option value="${doc.id}">${doc.data().name}</option>`;
                 });
             });
         }
@@ -1683,8 +1663,7 @@
                 const select = document.getElementById('userSelect');
                 select.innerHTML = '<option value="">اختر مستخدم</option>';
                 snapshot.docs.forEach(doc => {
-                    const user = doc.data();
-                    select.innerHTML += `<option value="${doc.id}">${user.name}</option>`;
+                    select.innerHTML += `<option value="${doc.id}">${doc.data().name}</option>`;
                 });
             });
         }
@@ -1692,45 +1671,42 @@
         async function loadRoomMessages() {
             const roomId = document.getElementById('roomSelect').value;
             const container = document.getElementById('roomMessagesContainer');
-            
-            if (!roomId) {
-                container.innerHTML = '<p style="text-align: center; color: #6b7280;">اختر غرفة لعرض الرسائل</p>';
-                return;
-            }
+            if (!roomId) return container.innerHTML = '<p style="text-align: center; color: #6b7280;">اختر غرفة لعرض الرسائل</p>';
             
             try {
-                const messagesSnapshot = await db.collection('rooms').doc(roomId).collection('messages')
-                    .orderBy('timestamp', 'desc')
-                    .limit(50)
-                    .get();
-                
-                if (messagesSnapshot.empty) {
-                    container.innerHTML = '<p style="text-align: center; color: #6b7280;">لا توجد رسائل في هذه الغرفة</p>';
-                    return;
-                }
+                const messagesSnapshot = await db.collection('rooms').doc(roomId).collection('messages').orderBy('timestamp', 'desc').limit(50).get();
+                if (messagesSnapshot.empty) return container.innerHTML = '<p style="text-align: center; color: #6b7280;">لا توجد رسائل في هذه الغرفة</p>';
                 
                 container.innerHTML = messagesSnapshot.docs.map(doc => {
                     const msg = { id: doc.id, ...doc.data() };
-                    const timestamp = msg.timestamp ? new Date(msg.timestamp.toDate()).toLocaleString('ar-SA') : 'غير محدد';
-                    
                     return `
                         <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; margin-bottom: 8px;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                                 <div style="display: flex; align-items: center; gap: 8px;">
                                     <img src="${msg.userAvatar}" class="avatar" style="width: 24px; height: 24px;">
                                     <strong>${msg.userName}</strong>
-                                    <span style="font-size: 12px; color: #6b7280;">${timestamp}</span>
+                                    <span style="font-size: 12px; color: #6b7280;">${msg.timestamp ? new Date(msg.timestamp.toDate()).toLocaleString('ar-SA') : ''}</span>
                                 </div>
-                                <button onclick="deleteMessage('${msg.id}')" class="action-btn btn-ban" style="font-size: 10px; padding: 4px 8px;">حذف</button>
+                                <button onclick="adminDeleteMessage('${roomId}', '${msg.id}')" class="action-btn btn-ban" style="font-size: 10px; padding: 4px 8px;">حذف</button>
                             </div>
                             <div>${msg.content}</div>
                         </div>
                     `;
                 }).join('');
-                
             } catch (error) {
                 console.error('Error loading room messages:', error);
                 container.innerHTML = '<p style="text-align: center; color: #ef4444;">حدث خطأ أثناء تحميل الرسائل</p>';
+            }
+        }
+        
+        async function adminDeleteMessage(roomId, messageId) {
+            if (!confirm('هل أنت متأكد من حذف هذه الرسالة؟')) return;
+            try {
+                await db.collection('rooms').doc(roomId).collection('messages').doc(messageId).delete();
+                await db.collection('rooms').doc(roomId).update({ messageCount: firebase.firestore.FieldValue.increment(-1) });
+                loadRoomMessages(); // Refresh the list
+            } catch (error) {
+                console.error('Error deleting message from admin panel:', error);
             }
         }
 
@@ -1741,32 +1717,28 @@
         async function promoteUser(userId) {
             try {
                 await db.collection('users').doc(userId).update({ role: 'moderator' });
-                showNotification('تم ترقية المستخدم بنجاح');
+                showNotification('تم ترقية المستخدم إلى مشرف');
             } catch (error) {
                 console.error('Error promoting user:', error);
-                alert('حدث خطأ أثناء ترقية المستخدم');
             }
         }
 
         async function demoteUser(userId) {
             try {
                 await db.collection('users').doc(userId).update({ role: 'user' });
-                showNotification('تم تخفيض رتبة المستخدم بنجاح');
+                showNotification('تم تخفيض رتبة المستخدم إلى عضو');
             } catch (error) {
                 console.error('Error demoting user:', error);
-                alert('حدث خطأ أثناء تخفيض رتبة المستخدم');
             }
         }
 
         async function banUser(userId) {
             if (!confirm('هل أنت متأكد من حظر هذا المستخدم؟')) return;
-            
             try {
                 await db.collection('users').doc(userId).update({ banned: true });
                 showNotification('تم حظر المستخدم بنجاح');
             } catch (error) {
                 console.error('Error banning user:', error);
-                alert('حدث خطأ أثناء حظر المستخدم');
             }
         }
 
@@ -1776,72 +1748,43 @@
                 showNotification('تم إلغاء حظر المستخدم بنجاح');
             } catch (error) {
                 console.error('Error unbanning user:', error);
-                alert('حدث خطأ أثناء إلغاء حظر المستخدم');
             }
         }
 
         async function sendGlobalNotification() {
             const text = document.getElementById('notificationText').value.trim();
-            if (!text) {
-                alert('الرجاء كتابة نص التنبيه');
-                return;
-            }
+            if (!text) return alert('الرجاء كتابة نص التنبيه');
             
             try {
-                await db.collection('notifications').add({
+                await db.collection('settings').doc('globalNotification').set({
                     text: text,
-                    type: 'global',
-                    createdBy: currentUser.id,
+                    createdBy: currentUser.name,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                
                 document.getElementById('notificationText').value = '';
                 showNotification('تم إرسال التنبيه لجميع المستخدمين');
-                
             } catch (error) {
                 console.error('Error sending notification:', error);
-                alert('حدث خطأ أثناء إرسال التنبيه');
             }
         }
 
         async function sendCoins() {
             const userId = document.getElementById('userSelect').value;
             const amount = parseInt(document.getElementById('coinsAmount').value);
-            
-            if (!userId) {
-                alert('الرجاء اختيار مستخدم');
-                return;
-            }
-            
-            if (!amount || amount < 1) {
-                alert('الرجاء إدخال عدد صحيح من الكوينز');
-                return;
-            }
+            if (!userId || !amount || amount < 1) return alert('الرجاء اختيار مستخدم وإدخال عدد صحيح من الكوينز');
             
             try {
-                // Update user coins
                 await db.collection('users').doc(userId).update({
                     coins: firebase.firestore.FieldValue.increment(amount)
                 });
                 
-                // Send notification to user
-                await db.collection('notifications').add({
-                    text: `لقد استلمت ${amount} كوينز من ${currentUser.name}`,
-                    type: 'coins',
-                    userId: userId,
-                    amount: amount,
-                    fromUserId: currentUser.id,
-                    fromUserName: currentUser.name,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
+                // Optional: Send a notification to the user
                 
                 document.getElementById('userSelect').value = '';
                 document.getElementById('coinsAmount').value = '';
                 showNotification(`تم إرسال ${amount} كوينز بنجاح`);
-                
             } catch (error) {
                 console.error('Error sending coins:', error);
-                alert('حدث خطأ أثناء إرسال الكوينز');
             }
         }
 
@@ -1849,47 +1792,27 @@
         // ROOM MANAGEMENT
         // =================================================================
 
-        function showAddRoomModal() {
-            document.getElementById('addRoomModal').classList.add('active');
-        }
-
-        function closeAddRoomModal() {
-            document.getElementById('addRoomModal').classList.remove('active');
-        }
+        function showAddRoomModal() { document.getElementById('addRoomModal').classList.add('active'); }
+        function closeAddRoomModal() { document.getElementById('addRoomModal').classList.remove('active'); }
 
         async function addRoom() {
             const name = document.getElementById('newRoomName').value.trim();
             const description = document.getElementById('newRoomDesc').value.trim();
             const image = document.getElementById('newRoomImage').value.trim();
             const hidden = document.getElementById('newRoomHidden').checked;
-            
-            if (!name || !description) {
-                alert('الرجاء ملء جميع الحقول المطلوبة');
-                return;
-            }
+            if (!name || !description) return alert('الرجاء ملء جميع الحقول المطلوبة');
             
             try {
                 await db.collection('rooms').add({
-                    name: name,
-                    description: description,
+                    name, description,
                     image: image || 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&h=300&fit=crop',
-                    messageCount: 0,
-                    hidden: hidden,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    messageCount: 0, hidden,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp( )
                 });
-                
-                // Clear form
-                document.getElementById('newRoomName').value = '';
-                document.getElementById('newRoomDesc').value = '';
-                document.getElementById('newRoomImage').value = '';
-                document.getElementById('newRoomHidden').checked = false;
-                
                 closeAddRoomModal();
                 showNotification('تم إضافة الغرفة بنجاح');
-                
             } catch (error) {
                 console.error('Error adding room:', error);
-                alert('حدث خطأ أثناء إضافة الغرفة');
             }
         }
 
@@ -1897,24 +1820,20 @@
             try {
                 const doc = await db.collection('rooms').doc(roomId).get();
                 if (!doc.exists) return;
-                
                 const room = doc.data();
                 document.getElementById('editRoomId').value = roomId;
                 document.getElementById('editRoomName').value = room.name;
                 document.getElementById('editRoomDesc').value = room.description;
-                document.getElementById('editRoomImage').value = room.image;
+                document.getElementById('editRoomImage
+').value = room.image;
                 document.getElementById('editRoomHidden').checked = room.hidden || false;
                 document.getElementById('editRoomModal').classList.add('active');
-                
             } catch (error) {
                 console.error('Error loading room data:', error);
-                alert('حدث خطأ أثناء تحميل بيانات الغرفة');
             }
         }
 
-        function closeEditRoomModal() {
-            document.getElementById('editRoomModal').classList.remove('active');
-        }
+        function closeEditRoomModal() { document.getElementById('editRoomModal').classList.remove('active'); }
 
         async function updateRoom() {
             const roomId = document.getElementById('editRoomId').value;
@@ -1922,316 +1841,286 @@
             const description = document.getElementById('editRoomDesc').value.trim();
             const image = document.getElementById('editRoomImage').value.trim();
             const hidden = document.getElementById('editRoomHidden').checked;
-            
-            if (!name || !description) {
-                alert('الرجاء ملء جميع الحقول المطلوبة');
-                return;
-            }
+            if (!roomId || !name || !description) return alert('الرجاء ملء جميع الحقول المطلوبة');
             
             try {
-                await db.collection('rooms').doc(roomId).update({
-                    name: name,
-                    description: description,
-                    image: image,
-                    hidden: hidden
-                });
-                
+                await db.collection('rooms').doc(roomId).update({ name, description, image, hidden });
                 closeEditRoomModal();
                 showNotification('تم تحديث الغرفة بنجاح');
-                
             } catch (error) {
                 console.error('Error updating room:', error);
-                alert('حدث خطأ أثناء تحديث الغرفة');
             }
         }
 
         async function deleteRoom(roomId) {
             if (!confirm('هل أنت متأكد من حذف هذه الغرفة؟ سيتم حذف جميع الرسائل أيضاً.')) return;
-            
             try {
-                // Delete all messages in the room
                 const messagesSnapshot = await db.collection('rooms').doc(roomId).collection('messages').get();
                 const batch = db.batch();
-                messagesSnapshot.docs.forEach(doc => {
-                    batch.delete(doc.ref);
-                });
+                messagesSnapshot.docs.forEach(doc => batch.delete(doc.ref));
                 await batch.commit();
-                
-                // Delete the room
                 await db.collection('rooms').doc(roomId).delete();
-                
-                showNotification('تم حذف الغرفة بنجاح');
-                
+                showNotification('تم حذف الغرفة وجميع رسائلها بنجاح');
             } catch (error) {
                 console.error('Error deleting room:', error);
-                alert('حدث خطأ أثناء حذف الغرفة');
             }
         }
 
         // =================================================================
-        // PRIVATE MESSAGES
+        // PRIVATE MESSAGES & ADMIN CONTACT
         // =================================================================
 
         function showPrivateMessages() {
-            document.getElementById('privateMessagesModal').classList.add('active');
-            loadPrivateMessages();
+            // This function can be expanded to show a list of private chats
+            alert("ميزة الرسائل الخاصة قيد التطوير.");
         }
 
-        function closePrivateMessagesModal() {
-            document.getElementById('privateMessagesModal').classList.remove('active');
-        }
+        function showAdminContactModal() { document.getElementById('admin-contact-modal').classList.add('active'); }
+        function closeAdminContactModal() { document.getElementById('admin-contact-modal').classList.remove('active'); }
 
-        async function loadPrivateMessages() {
+        async function sendAdminContactMessage() {
+            const messageText = document.getElementById('admin-contact-message').value.trim();
+            if (!messageText) return showNotification('الرجاء كتابة رسالة.', 'error');
+            if (!currentUser) return showNotification('الرجاء تسجيل الدخول أولاً.', 'error');
+
             try {
-                const messagesSnapshot = await db.collection('privateMessages')
-                    .where('participants', 'array-contains', currentUser.id)
-                    .orderBy('lastMessageTime', 'desc')
-                    .get();
-                
-                const container = document.getElementById('privateMessagesContainer');
-                
-                if (messagesSnapshot.empty) {
-                    container.innerHTML = '<p style="text-align: center; color: #6b7280;">لا توجد رسائل خاصة</p>';
-                    return;
-                }
-                
-                container.innerHTML = messagesSnapshot.docs.map(doc => {
-                    const conversation = doc.data();
-                    const otherUserId = conversation.participants.find(id => id !== currentUser.id);
-                    
-                    return `
-                        <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; margin-bottom: 8px; cursor: pointer;" onclick="openPrivateConversation('${doc.id}')">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <strong>${conversation.otherUserName}</strong>
-                                <span style="font-size: 12px; color: #6b7280;">${conversation.lastMessageTime ? new Date(conversation.lastMessageTime.toDate()).toLocaleString('ar-SA') : ''}</span>
-                            </div>
-                            <div style="color: #6b7280; font-size: 14px; margin-top: 4px;">${conversation.lastMessage || 'لا توجد رسائل'}</div>
-                        </div>
-                    `;
-                }).join('');
-                
-            } catch (error) {
-                console.error('Error loading private messages:', error);
-                document.getElementById('privateMessagesContainer').innerHTML = '<p style="text-align: center; color: #ef4444;">حدث خطأ أثناء تحميل الرسائل</p>';
-            }
-        }
-
-        async function openPrivateMessage() {
-            if (currentUser.coins < 1) {
-                alert('عفواً، لا تملك كوينز لفتح الرسائل الخاصة');
-                return;
-            }
-            
-            if (!currentProfileUserId || currentProfileUserId === currentUser.id) {
-                alert('خطأ في تحديد المستخدم');
-                return;
-            }
-            
-            try {
-                // Deduct 1 coin from current user
-                await db.collection('users').doc(currentUser.id).update({
-                    coins: firebase.firestore.FieldValue.increment(-1)
+                await db.collection('adminMessages').add({
+                    fromUserId: currentUser.id,
+                    fromUserName: currentUser.name,
+                    message: messageText,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    status: 'new'
                 });
-                
-                currentUser.coins = Math.max(0, currentUser.coins - 1);
-                updateHeader();
-                
-                // Create or find existing conversation
-                const conversationId = [currentUser.id, currentProfileUserId].sort().join('_');
-                
-                const conversationRef = db.collection('privateMessages').doc(conversationId);
-                const conversationDoc = await conversationRef.get();
-                
-                if (!conversationDoc.exists) {
-                    // Create new conversation
-                    const otherUserDoc = await db.collection('users').doc(currentProfileUserId).get();
-                    const otherUser = otherUserDoc.data();
-                    
-                    await conversationRef.set({
-                        participants: [currentUser.id, currentProfileUserId],
-                        participantNames: {
-                            [currentUser.id]: currentUser.name,
-                            [currentProfileUserId]: otherUser.name
-                        },
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        lastMessage: '',
-                        lastMessageTime: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                }
-                
-                closeProfileModal();
-                showPrivateMessages();
-                showNotification('تم فتح المحادثة الخاصة (تم خصم كوين واحد)');
-                
+                showNotification('تم إرسال رسالتك إلى الإدارة بنجاح.');
+                closeAdminContactModal();
             } catch (error) {
-                console.error('Error opening private message:', error);
-                alert('حدث خطأ أثناء فتح المحادثة الخاصة');
+                console.error("Error sending admin contact message:", error);
+                showNotification('حدث خطأ أثناء إرسال الرسالة.', 'error');
+            }
+        }
+        
+        // =================================================================
+        // HEADER & ADS MANAGEMENT (Corrected & Integrated)
+        // =================================================================
+
+        async function loadHeaderImageUrl() {
+            try {
+                const doc = await db.collection("settings").doc("general").get();
+                if (doc.exists && doc.data().headerImage) {
+                    document.getElementById("header-image-url").value = doc.data().headerImage;
+                }
+            } catch (error) {
+                console.error("Error loading header image URL:", error);
+            }
+        }
+
+        async function updateHeaderImage() {
+            const newImageUrl = document.getElementById("header-image-url").value.trim();
+            if (!newImageUrl) return alert("الرجاء إدخال رابط صورة الهيدر.");
+
+            try {
+                await db.collection("settings").doc("general").set({ headerImage: newImageUrl }, { merge: true });
+                showNotification("تم تحديث صورة الهيدر بنجاح.");
+                document.querySelector(".main-header").style.backgroundImage = `url('${newImageUrl}')`;
+            } catch (error) {
+                console.error("Error updating header image:", error);
+                alert("حدث خطأ أثناء تحديث صورة الهيدر.");
+            }
+        }
+
+        async function applyHeaderImageOnLoad() {
+            try {
+                const doc = await db.collection("settings").doc("general").get();
+                if (doc.exists && doc.data().headerImage) {
+                    document.querySelector(".main-header").style.backgroundImage = `url('${doc.data().headerImage}')`;
+                }
+            } catch (error) {
+                console.error("Error applying header image on load:", error);
+            }
+        }
+
+        async function loadAds() {
+            try {
+                const doc = await db.collection("settings").doc("ads").get();
+                const ads = (doc.exists && doc.data().items) ? doc.data().items : [];
+                const adsBanner = document.getElementById("ads-banner");
+                const adsContainer = document.getElementById("ads-banner-container");
+
+                if (ads.length > 0) {
+                    adsBanner.innerHTML = ads.map(ad => `<span class="ads-banner-item">${ad}</span>`).join('<span class="ads-separator"></span>');
+                    adsContainer.classList.remove("hidden");
+                } else {
+                    adsContainer.classList.add("hidden");
+                }
+            } catch (error) {
+                console.error("Error loading ads:", error);
+            }
+        }
+
+        async function addAd() {
+            const adTextInput = document.getElementById('ad-text-input');
+            const adText = adTextInput.value.trim();
+            if (!adText) return;
+
+            try {
+                await db.collection("settings").doc("ads").set({
+                    items: firebase.firestore.FieldValue.arrayUnion(adText)
+                }, { merge: true });
+                showNotification("تم إضافة الإعلان بنجاح!");
+                adTextInput.value = '';
+                loadAds();
+                renderAdsManagement();
+            } catch (error) {
+                console.error("Error adding ad:", error);
+            }
+        }
+
+        async function deleteAd(adText) {
+            if (!confirm(`هل أنت متأكد من حذف الإعلان: "${adText}"؟`)) return;
+            try {
+                await db.collection("settings").doc("ads").update({
+                    items: firebase.firestore.FieldValue.arrayRemove(adText)
+                });
+                showNotification("تم حذف الإعلان بنجاح!");
+                loadAds();
+                renderAdsManagement();
+            } catch (error) {
+                console.error("Error deleting ad:", error);
+            }
+        }
+
+        async function renderAdsManagement() {
+            const adsListDiv = document.getElementById("ads-list");
+            adsListDiv.innerHTML = '';
+            const doc = await db.collection("settings").doc("ads").get();
+            if (doc.exists && doc.data().items) {
+                const ads = doc.data().items;
+                adsListDiv.innerHTML = ads.map(ad => `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid #e5e7eb;">
+                        <span>${ad}</span>
+                        <button class="btn btn-danger" style="padding: 4px 8px; font-size: 12px;" onclick="deleteAd('${ad}')">حذف</button>
+                    </div>
+                `).join('');
             }
         }
 
         // =================================================================
-        // UTILITY FUNCTIONS
+        // UTILITY & HELPER FUNCTIONS
         // =================================================================
 
         function getRoleText(role) {
-            switch (role) {
-                case 'admin': return 'مدير';
-                case 'moderator': return 'مشرف';
-                default: return 'عضو';
-            }
+            const roles = { admin: 'مدير', moderator: 'مشرف', user: 'عضو' };
+            return roles[role] || 'عضو';
         }
 
-        function showNotification(text, type = 'success') {
+        function getRoleClass(role) {
+            const roleClasses = { admin: 'admin-badge', moderator: 'moderator-badge' };
+            return roleClasses[role] || '';
+        }
+
+        function showNotification(message, type = 'success') {
             const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.textContent = text;
+            notification.className = `notification ${type === 'error' ? 'btn-danger' : ''}`;
+            notification.textContent = message;
             document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
+            setTimeout(() => notification.remove(), 3000);
         }
 
         function showAdminNotification() {
             const container = document.getElementById('adminNotificationContainer');
-            container.innerHTML = `
-                <div class="admin-notification">
-                    🔥 أنت مدير هذا التطبيق! يمكنك إدارة المستخدمين والغرف من لوحة الإدارة
-                </div>
-            `;
+            container.innerHTML = `<div class="admin-notification">🔥 أنت مدير هذا التطبيق! يمكنك إدارة المستخدمين والغرف من لوحة الإدارة.</div>`;
         }
-
-        // =================================================================
-        // EMOJI PICKER
-        // =================================================================
 
         function initializeEmojiPicker() {
-            const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁', '☹️', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '🤯', '😳', '🥵', '🥶', '😱', '😨', '😰', '😥', '😓', '🤗', '🤔', '🤭', '🤫', '🤥', '😶', '😐', '😑', '😬', '🙄', '😯', '😦', '😧', '😮', '😲', '🥱', '😴', '🤤', '😪', '😵', '🤐', '🥴', '🤢', '🤮', '🤧', '😷', '🤒', '🤕'];
-            
+            const emojis = ['😀', '😂', '❤️', '👍', '🔥', '😊', '🥰', '🤔', '🎉', '🙏', '😭', '😎', '😮', '🤯', '😴', '👋'];
             const grid = document.getElementById('emojiGrid');
-            grid.innerHTML = emojis.map(emoji => `
-                <button class="emoji-btn" onclick="insertEmoji('${emoji}')">${emoji}</button>
-            `).join('');
+            grid.innerHTML = emojis.map(emoji => `<button class="emoji-btn" onclick="insertEmoji('${emoji}')">${emoji}</button>`).join('');
         }
 
-        function toggleEmojiPicker() {
-            const picker = document.getElementById('emojiPicker');
-            picker.classList.toggle('active');
-        }
-
+        function toggleEmojiPicker() { document.getElementById('emojiPicker').classList.toggle('active'); }
         function insertEmoji(emoji) {
             const input = document.getElementById('messageInput');
             input.value += emoji;
             input.focus();
-            document.getElementById('emojiPicker').classList.remove('active');
         }
 
-        // =================================================================
-        // BLOCK AND REPORT SYSTEM
-        // =================================================================
-        
         function toggleMessageOptions(event, userId, userName) {
             event.stopPropagation();
-            
-            // إزالة أي قوائم خيارات مفتوحة
             document.querySelectorAll('.options-menu').forEach(menu => menu.remove());
             
             const menu = document.createElement('div');
             menu.className = 'options-menu';
             menu.innerHTML = `
-                <button onclick="blockUser('${userId}', '${userName}')">حظر المستخدم</button>
-                <button onclick="reportUser('${userId}', '${userName}')">إبلاغ عن المستخدم</button>
+                <button onclick="blockUser('${userId}', '${userName}')">🚫 حظر المستخدم</button>
+                <button onclick="reportUser('${userId}', '${userName}')">🚩 إبلاغ عن المستخدم</button>
             `;
+            event.target.closest('.message-options').appendChild(menu);
             
-            event.target.parentElement.appendChild(menu);
-            
-            // إغلاق القائمة عند النقر خارجها
             setTimeout(() => {
-                document.addEventListener('click', function closeMenu() {
-                    menu.remove();
-                    document.removeEventListener('click', closeMenu);
-                });
+                document.addEventListener('click', () => menu.remove(), { once: true });
             }, 100);
         }
         
         async function blockUser(userId, userName) {
             if (!confirm(`هل أنت متأكد من حظر ${userName}؟ لن تتمكن من رؤية رسائله بعد الآن.`)) return;
-            
             try {
                 await db.collection('users').doc(currentUser.id).update({
                     blockedUsers: firebase.firestore.FieldValue.arrayUnion(userId)
                 });
-                
-                // تحديث الكائن المحلي
-                if (!currentUser.blockedUsers) currentUser.blockedUsers = [];
-                currentUser.blockedUsers.push(userId);
-                
+                currentUser.blockedUsers = [...(currentUser.blockedUsers || []), userId];
                 showNotification(`تم حظر ${userName} بنجاح`);
-                
-                // إعادة تحميل الرسائل لإخفاء رسائل المستخدم المحظور
                 renderMessages();
-                
             } catch (error) {
                 console.error('Error blocking user:', error);
-                alert('حدث خطأ أثناء حظر المستخدم');
             }
         }
         
         async function reportUser(userId, userName) {
             const reason = prompt(`لماذا تريد الإبلاغ عن ${userName}؟`, '');
             if (!reason || !reason.trim()) return;
-            
             try {
                 await db.collection('reports').add({
-                    reportedUserId: userId,
-                    reportedUserName: userName,
-                    reporterUserId: currentUser.id,
-                    reporterUserName: currentUser.name,
-                    reason: reason.trim(),
-                    roomId: currentRoom.id,
-                    roomName: currentRoom.name,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    status: 'pending'
+                    reportedUserId: userId, reportedUserName: userName,
+                    reporterUserId: currentUser.id, reporterUserName: currentUser.name,
+                    reason: reason.trim(), roomId: currentRoom.id, roomName: currentRoom.name,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(), status: 'pending'
                 });
-                
-                showNotification(`تم إرسال البلاغ عن ${userName} بنجاح. سيتم مراجعته من قبل الإدارة.`);
-                
+                showNotification(`تم إرسال البلاغ عن ${userName} بنجاح.`);
             } catch (error) {
                 console.error('Error reporting user:', error);
-                alert('حدث خطأ أثناء إرسال البلاغ');
             }
         }
 
         // =================================================================
-        // EVENT LISTENERS
+        // GLOBAL EVENT LISTENERS
         // =================================================================
 
+        document.addEventListener("DOMContentLoaded", () => {
+            applyHeaderImageOnLoad();
+        });
+
         document.getElementById('messageInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
+            if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 sendMessage();
             }
         });
 
-        // Listen for notifications
-        if (currentUser) {
-            db.collection('notifications')
-                .where('userId', '==', currentUser.id)
-                .where('read', '==', false)
-                .onSnapshot(snapshot => {
-                    snapshot.docChanges().forEach(change => {
-                        if (change.type === 'added') {
-                            const notification = change.doc.data();
-                            showNotification(notification.text, notification.type);
-                            
-                            // Mark as read
-                            change.doc.ref.update({ read: true });
-                        }
-                    });
-                });
+        function listenForNotifications() {
+            // Listen for global notifications
+            db.collection('settings').doc('globalNotification').onSnapshot(doc => {
+                if (doc.exists) {
+                    const notification = doc.data();
+                    // Avoid showing old notifications by checking timestamp
+                    const notificationTime = notification.createdAt.toDate();
+                    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+                    if (notificationTime > fiveMinutesAgo) {
+                        showNotification(`تنبيه عام: ${notification.text}`);
+                    }
+                }
+            });
         }
 
-        // Close modals when clicking outside
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('modal')) {
                 e.target.classList.remove('active');
