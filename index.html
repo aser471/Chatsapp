@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>شات العزاوي - تطبيق دردشة متكامل</title>
     
-    <!-- START: FIREBASE SDK -->
+    <!-- START: FIREBASE SDK (Using Modular v9+ with compat for easier transition) -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
@@ -73,25 +73,16 @@
             margin-bottom: 10px;
             flex-grow: 1;
         }
-        .room-card-users {
-            font-size: 0.85em;
-            color: #888;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
         .rooms-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjust minmax for better sizing */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
         }
         @media (min-width: 768px) {
             .rooms-grid {
-                grid-template-columns: repeat(2, 1fr); /* Two columns on larger screens */
+                grid-template-columns: repeat(2, 1fr);
             }
         }
-        
-        /* إصلاح مشاكل عرض الرسائل */
         .message { 
             padding: 12px 16px; 
             border-radius: 12px; 
@@ -130,57 +121,19 @@
         @keyframes fireGlow { 0%, 100% { box-shadow: 0 0 20px rgba(255, 107, 107, 0.5); } 50% { box-shadow: 0 0 30px rgba(255, 107, 107, 0.8), 0 0 40px rgba(238, 90, 36, 0.6); } }
         .message-admin::before { content: '🔥'; position: absolute; top: -10px; right: -10px; font-size: 20px; animation: fireFloat 1.5s ease-in-out infinite; }
         @keyframes fireFloat { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-5px) rotate(10deg); } }
-        
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 10px; }
         .modal.active { display: flex; }
         .modal-content { background: white; border-radius: 16px; padding: 24px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; }
         @media (min-width: 768px) { .modal-content { padding: 32px; } }
-        .input-field { width: 100%; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; margin-bottom: 16px; transition: border-color 0.3s; }.input-field:focus { outline: none; border-color: #667eea; }
-        
-        /* Scrolling Ads Banner */
-        .ads-banner-container {
-            width: 100%;
-            overflow: hidden;
-            background-color: #f8f8f8;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            position: relative;
-            height: 40px; /* Fixed height for the banner */
-        }
-        .ads-banner {
-            display: flex;
-            align-items: center;
-            white-space: nowrap;
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            animation: scrollAds 30s linear infinite; /* Adjust duration as needed */
-        }
-        .ads-banner-item {
-            padding: 0 20px;
-            font-size: 1.1em;
-            color: #333;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .ads-banner-item::before {
-            content: '📢'; /* Speaker emoji */
-            font-size: 1.2em;
-        }
-        .ads-separator {
-            width: 2px;
-            height: 70%;
-            background-color: #ccc;
-            margin: 0 15px;
-        }
-        @keyframes scrollAds {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }     .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px; text-align: center; }
+        .input-field { width: 100%; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; margin-bottom: 16px; transition: border-color 0.3s; }
+        .input-field:focus { outline: none; border-color: #667eea; }
+        .ads-banner-container { width: 100%; overflow: hidden; background-color: #f8f8f8; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: relative; height: 40px; }
+        .ads-banner { display: flex; align-items: center; white-space: nowrap; position: absolute; top: 0; left: 0; height: 100%; animation: scrollAds 30s linear infinite; }
+        .ads-banner-item { padding: 0 20px; font-size: 1.1em; color: #333; font-weight: 500; display: flex; align-items: center; gap: 10px; }
+        .ads-banner-item::before { content: '📢'; font-size: 1.2em; }
+        .ads-separator { width: 2px; height: 70%; background-color: #ccc; margin: 0 15px; }
+        @keyframes scrollAds { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px; text-align: center; }
         @media (min-width: 768px) { .stat-card { padding: 24px; } }
         .tab-button { padding: 10px 16px; border: none; background: transparent; cursor: pointer; border-bottom: 3px solid transparent; font-weight: 600; transition: all 0.3s; font-size: 14px; }
         @media (min-width: 768px) { .tab-button { padding: 12px 24px; font-size: 16px; } }
@@ -188,8 +141,6 @@
         .hidden { display: none !important; }
         .grid { display: grid; gap: 15px; }
         @media (min-width: 768px) { .grid { gap: 20px; } }
-        .grid-cols-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-        @media (min-width: 768px) { .grid-cols-2 { grid-template-columns: repeat(2, 1fr); } }
         .grid-cols-4 { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
         @media (min-width: 768px) { .grid-cols-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); } }
         .main-header { background: url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/%D9%85%D9%84%D8%A7%D8%B0-%D8%A7%D9%84%D8%B0%D9%87%D8%A8%D9%8A3-%D8%A7%D9%84%D9%85%D8%AA%D8%AD%D8%B1%D9%83-1-tkGUJkQJVKQoTmRIFbMFUpI8gCzfkJ.gif'  ) center/cover; padding: 16px 20px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); position: relative; }
@@ -199,392 +150,55 @@
         .header-title { font-size: 28px; font-weight: 900; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: titlePulse 3s ease-in-out infinite; text-align: center; margin-bottom: 16px; }
         @media (min-width: 768px) { .header-title { font-size: 36px; margin-bottom: 0; text-align: right; } }
         @keyframes titlePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
-        .nav-links { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 16px; }
-        @media (min-width: 768px) { .nav-links { gap: 20px; margin-bottom: 0; justify-content: flex-start; } }
+        .nav-links { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+        @media (min-width: 768px) { .nav-links { gap: 20px; justify-content: flex-start; } }
         .nav-link { padding: 8px 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 20px; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.3s; animation: navFloat 3s ease-in-out infinite; text-decoration: none; display: inline-block; }
         @media (min-width: 768px) { .nav-link { padding: 10px 20px; font-size: 14px; } }
         .nav-link:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4); }
-        .nav-link:nth-child(1) { animation-delay: 0s; }
-        .nav-link:nth-child(2) { animation-delay: 0.2s; }
-        .nav-link:nth-child(3) { animation-delay: 0.4s; }
-        .nav-link:nth-child(4) { animation-delay: 0.6s; }
-        @keyframes navFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-3px); } }
-        .header { background: white; padding: 12px 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); flex-wrap: wrap; gap: 10px; }
-        @media (min-width: 768px) { .header { padding: 16px 24px; margin-bottom: 24px; flex-wrap: nowrap; } }
-        
-        /* إصلاح مشاكل حاوية الدردشة */
-        .chat-container { 
-            display: flex; 
-            flex-direction: column; 
-            height: 100vh; 
-            background: white; 
-            border-radius: 0; 
-            overflow: hidden; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            right: 0; 
-            bottom: 0; 
-            z-index: 100; 
-        }
-        @media (min-width: 768px) { 
-            .chat-container { 
-                height: calc(100vh - 40px); 
-                position: relative;
-                border-radius: 16px;
-                margin: 20px auto;
-                max-width: 1400px;
-            } 
-        }
-        
-        /* إصلاح حاوية الرسائل */
-        .messages-container { 
-            flex: 1; 
-            overflow-y: auto; 
-            padding: 15px; 
-            display: block;
-            padding-bottom: 120px; /* مساحة إضافية لحقل الإدخال */
-            min-height: 0; /* مهم لجعل الـ flex يعمل بشكل صحيح */
-        }
-        @media (min-width: 768px) { 
-            .messages-container { 
-                padding: 20px; 
-                padding-bottom: 100px; 
-            } 
-        }
-        
-        /* إصلاح حاوية إدخال الرسائل */
-        .message-input-container { 
-            position: fixed; 
-            bottom: 0; 
-            left: 0; 
-            right: 0; 
-            padding: 15px; 
-            border-top: 2px solid #e5e7eb; 
-            display: flex; 
-            gap: 8px; 
-            background: white; 
-            z-index: 101; 
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1); 
-        }
-        @media (min-width: 768px) { 
-            .message-input-container { 
-                padding: 15px; 
-                gap: 12px; 
-                position: absolute;
-                border-radius: 0 0 16px 16px;
-            } 
-        }
-        
-        .user-badge { display: inline-block; padding: 4px 12px; background: #10b981; color: white; border-radius: 12px; font-size: 12px; font-weight: 600; animation: badgePulse 2s ease-in-out infinite; }
-        @keyframes badgePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-        .admin-badge { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); animation: adminBadgeGlow 2s ease-in-out infinite; }
-        .vip-badge {
-            display: inline-block;
-            margin-right: 5px;
-            font-size: 1.2em;
-            animation: vipPulse 1.5s infinite alternate, vipColorChange 3s infinite linear;
-            vertical-align: middle;
-        }
-        @keyframes vipPulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
-        }
-        @keyframes vipColorChange {
-            0% { color: gold; }
-            25% { color: #ffd700; }
-            50% { color: #ffcc00; }
-            75% { color: #ffeb3b; }
-            100% { color: gold; }
-        }
-        @keyframes adminBadgeGlow { 0%, 100% { box-shadow: 0 0 10px rgba(255, 107, 107, 0.5); } 50% { box-shadow: 0 0 20px rgba(255, 107, 107, 0.8); } }
-        .moderator-badge { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); animation: moderatorBadgeGlow 2s ease-in-out infinite; }
-        @keyframes moderatorBadgeGlow { 0%, 100% { box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); } 50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.8); } }
-
-        .banned-badge { background: #6b7280; animation: none; }
-        table { width: 100%; border-collapse: collapse; overflow-x: auto; display: block; }
-        @media (min-width: 768px) { table { display: table; } }
-        th, td { padding: 8px; text-align: right; border-bottom: 1px solid #e5e7eb; font-size: 12px; }
-        @media (min-width: 768px) { th, td { padding: 12px; font-size: 14px; } }
-        th { background: #f9fafb; font-weight: 600; }
-        .avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
-        @media (min-width: 768px) { .avatar { width: 40px; height: 40px; } }
-        .title-main { font-size: 20px; font-weight: bold; }
-        @media (min-width: 768px) { .title-main { font-size: 24px; } }
-        .title-section { font-size: 24px; font-weight: bold; }
-        @media (min-width: 768px) { .title-section { font-size: 32px; } }
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #555; }
-        .admin-notification { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); color: white; padding: 12px 20px; border-radius: 12px; margin-bottom: 12px; text-align: center; font-weight: bold; animation: slideDown 0.5s ease-out, notificationGlow 2s ease-in-out infinite; box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4); }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes notificationGlow { 0%, 100% { box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4); } 50% { box-shadow: 0 4px 20px rgba(255, 107, 107, 0.7); } }
-        .emoji-picker { position: absolute; bottom: 85px; right: 20px; background: white; border-radius: 16px; padding: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); display: none; max-width: 320px; z-index: 1000; }
-        @media (min-width: 768px) { .emoji-picker { bottom: 90px; } }
-        .emoji-picker.active { display: block; animation: slideUp 0.3s ease-out; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .emoji-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; max-height: 200px; overflow-y: auto; }
-        .emoji-btn { font-size: 28px; padding: 8px; border: none; background: transparent; cursor: pointer; border-radius: 8px; transition: all 0.2s; }
-        .emoji-btn:hover { background: #f3f4f6; transform: scale(1.2); }
-        .emoji-btn:active { transform: scale(0.95); }
-        .profile-btn { width: 40px; height: 40px; border-radius: 50%; border: 3px solid #667eea; cursor: pointer; transition: all 0.3s; object-fit: cover; }
-        .profile-btn:hover { transform: scale(1.1); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); }
-        .action-btn { padding: 6px 12px; font-size: 12px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; transition: all 0.3s; margin: 2px; }
-        .action-btn:hover { transform: translateY(-2px); }
-        .btn-promote { background: #3b82f6; color: white; }
-        .btn-demote { background: #f59e0b; color: white; }
-        .btn-ban { background: #ef4444; color: white; }
-        .btn-unban { background: #10b981; color: white; }
-        .avatar-option { width: 60px; height: 60px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all 0.3s; }
-        .avatar-option:hover { border-color: #667eea; transform: scale(1.1); }
-        .avatar-option.selected { border-color: #667eea; box-shadow: 0 0 12px rgba(102, 126, 234, 0.5); }
-        .divider { text-align: center; margin: 16px 0; color: #9ca3af; }
-        
-        /* Message Options */
-        .message-options {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .message:hover .message-options {
-            opacity: 1;
-        }
-        
-        .options-btn {
-            background: rgba(0,0,0,0.5);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .options-menu {
-            position: absolute;
-            top: 30px;
-            left: 0;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            padding: 8px;
-            z-index: 1000;
-            min-width: 150px;
-        }
-        
-        .options-menu button {
-            display: block;
-            width: 100%;
-            padding: 8px 12px;
-            border: none;
-            background: transparent;
-            text-align: right;
-            cursor: pointer;
-            border-radius: 4px;
-            font-size: 14px;
-            margin-bottom: 4px;
-        }
-        
-        .options-menu button:hover {
-            background: #f3f4f6;
-        }
-        
-        /* Likes and Quotes */
-        .message-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 8px;
-            align-items: center;
-        }
-        
-        .like-btn, .quote-btn {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            border-radius: 12px;
-            padding: 4px 8px;
-            cursor: pointer;
-            font-size: 12px;
-            color: inherit;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            transition: all 0.3s;
-        }
-        
-        .message-sent .like-btn, .message-sent .quote-btn {
-             background: rgba(255,255,255,0.2);
-             color: white;
-        }
-        .message-received .like-btn, .message-received .quote-btn {
-             background: rgba(0,0,0,0.05);
-             color: #333;
-        }
-        
-        .like-btn:hover, .quote-btn:hover {
-            transform: scale(1.05);
-        }
-        
-        .like-btn.liked {
-            background: #ff6b6b;
-            color: white !important;
-        }
-        
-        /* Profile Modal */
-        .profile-modal {
-            max-width: 600px;
-        }
-        
-        .profile-header {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-        
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin: 0 auto 16px;
-            border: 4px solid #667eea;
-        }
-        
-        .profile-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            margin: 24px 0;
-        }
-        
-        .stat-item {
-            text-align: center;
-            padding: 16px;
-            background: #f9fafb;
-            border-radius: 12px;
-        }
-        
-        .stat-
-value {
-            font-size: 24px;
-            font-weight: bold;
-            color: #667eea;
-        }
-        
-        .stat-label {
-            font-size: 14px;
-            color: #6b7280;
-            margin-top: 4px;
-        }
-        
-        /* Private Messages */
-        .private-message-btn {
-            background: linear-gradient(135deg, #ffd700, #ffed4e);
-            color: #8b4513;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 16px;
-        }
-        
-        .private-message-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
-        }
-        
-        .private-message-btn:disabled {
-            background: #e5e7eb;
-            color: #9ca3af;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
-        /* Hidden Room Indicator */
-        .hidden-room {
-            position: relative;
-        }
-        
-        .hidden-room::before {
-            content: '🔒';
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            z-index: 1;
-        }
-        
-        /* Notification Styles */
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 20px; /* Changed to left for better visibility on RTL */
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            padding: 16px 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
-            z-index: 2000;
-            animation: slideInLeft 0.3s ease-out;
-            max-width: 300px;
-        }
-        
-        @keyframes slideInLeft {
-            from { transform: translateX(-100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        
-        .notification.error {
-            background: linear-gradient(135deg, #ef4444, #b91c1c);
-        }
-        
-        /* File Upload Styles */
-        .file-upload {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .file-upload input[type="file"] {
-            position: absolute;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-        
-        .file-upload-btn {
-            background: #667eea;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: inline-block;
-            transition: all 0.3s;
-        }
-        
-        .file-upload-btn:hover {
-            background: #5a67d8;
-            transform: translateY(-2px);
-        }
-        
-        /* Clear floats */
-        .messages-container::after {
-            content: "";
-            display: table;
-            clear: both;
-        }
+        .header { background: white; padding: 12px 16px; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); flex-wrap: wrap; gap: 10px; }
+        @media (min-width: 768px) { .header { padding: 16px 24px; flex-wrap: nowrap; } }
+        .chat-container { display: flex; flex-direction: column; height: 100vh; background: white; border-radius: 0; overflow: hidden; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 100; }
+        @media (min-width: 768px) { .chat-container { height: calc(100vh - 40px); position: relative; border-radius: 16px; margin: 20px auto; max-width: 1400px; } }
+        .messages-container { flex: 1; overflow-y: auto; padding: 15px; display: block; padding-bottom: 120px; min-height: 0; }
+        @media (min-width: 768px) { .messages-container { padding: 20px; padding-bottom: 100px; } }
+        .message-input-container { position: fixed; bottom: 0; left: 0; right: 0; padding: 15px; border-top: 2px solid #e5e7eb; display: flex; gap: 8px; background: white; z-index: 101; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
+        @media (min-width: 768px) { .message-input-container { padding: 15px; gap: 12px; position: absolute; border-radius: 0 0 16px 16px; } }
+        .emoji-picker { display: none; position: absolute; bottom: 70px; right: 15px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); padding: 10px; z-index: 102; max-height: 200px; overflow-y: auto; }
+        .emoji-picker.active { display: block; }
+        .emoji-grid { display: flex; flex-wrap: wrap; gap: 5px; }
+        .emoji-btn { background: none; border: none; font-size: 24px; cursor: pointer; padding: 5px; transition: transform 0.1s; }
+        .emoji-btn:hover { transform: scale(1.1); }
+        .profile-btn { width: 40px; height: 40px; border-radius: 50%; cursor: pointer; border: 2px solid #667eea; object-fit: cover; }
+        .coins-display { background: #ffd700; color: #8b4513; padding: 4px 8px; border-radius: 12px; font-weight: bold; font-size: 14px; display: flex; align-items: center; gap: 4px; }
+        .admin-notification { background: #ff6b6b; color: white; padding: 10px; text-align: center; font-weight: bold; border-radius: 8px; margin: 10px 0; }
+        .user-badge { padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+        .admin-badge { background: #ff6b6b; color: white; }
+        .moderator-badge { background: #ffd700; color: #8b4513; }
+        .user-badge-default { background: #e5e7eb; color: #374151; }
+        .user-list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #e5e7eb; }
+        .user-list-item:last-child { border-bottom: none; }
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .user-actions button { margin-left: 8px; }
+        .profile-modal { max-width: 600px; }
+        .profile-header { text-align: center; margin-bottom: 24px; }
+        .profile-avatar { width: 100px; height: 100px; border-radius: 50%; margin: 0 auto 16px; border: 4px solid #667eea; }
+        .profile-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0; }
+        .stat-item { text-align: center; padding: 16px; background: #f9fafb; border-radius: 12px; }
+        .stat-value { font-size: 24px; font-weight: bold; color: #667eea; }
+        .stat-label { font-size: 14px; color: #6b7280; margin-top: 4px; }
+        .private-message-btn { background: linear-gradient(135deg, #ffd700, #ffed4e); color: #8b4513; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; transition: all 0.3s; margin-top: 16px; }
+        .private-message-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4); }
+        .private-message-btn:disabled { background: #e5e7eb; color: #9ca3af; cursor: not-allowed; transform: none; box-shadow: none; }
+        .hidden-room { position: relative; }
+        .hidden-room::before { content: '🔒'; position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; z-index: 1; }
+        .notification { position: fixed; top: 20px; left: 20px; background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 16px 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4); z-index: 2000; animation: slideInLeft 0.3s ease-out; max-width: 300px; }
+        @keyframes slideInLeft { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .notification.error { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+        .file-upload { position: relative; display: inline-block; }
+        .file-upload input[type="file"] { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+        .file-upload-btn { background: #667eea; color: white; padding: 8px 16px; border-radius: 8px; cursor: pointer; display: inline-block; transition: all 0.3s; }
+        .file-upload-btn:hover { background: #5a67d8; transform: translateY(-2px); }
+        .messages-container::after { content: ""; display: table; clear: both; }
     </style>
 </head>
 <body>
@@ -594,12 +208,7 @@ value {
             <h2 style="text-align: center; margin-bottom: 24px; font-size: 28px; font-weight: bold; color: #667eea;">مرحباً بك في شات العزاوي</h2>
             <div style="text-align: center; margin-bottom: 24px;">
                 <button onclick="loginWithGoogle()" class="btn btn-google" style="width: 100%; margin-bottom: 16px;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                    </svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
                     تسجيل الدخول بـ Google
                 </button>
             </div>
@@ -630,11 +239,6 @@ value {
             </div>
         </div>
 
-        <!-- This header appears inside Chat View -->
-        <div id="secondaryHeader" class="header hidden">
-             <!-- Content will be managed by JS -->
-        </div>
-
         <div id="ads-banner-container" class="ads-banner-container hidden">
             <div id="ads-banner" class="ads-banner"></div>
         </div>
@@ -663,10 +267,9 @@ value {
                         <img id="userAvatarBtn2" class="profile-btn hidden" onclick="showProfile()">
                         <span id="userNameDisplay2" style="font-weight: 600;"></span>
                         <div id="userCoinsDisplay2" class="coins-display hidden">
-                            <span class="golden-coin">🪙</span>
-                            <span id="userCoinsCount2">0</span>
+                            <span id="userCoinsCount2">0</span> 🪙
                         </div>
-                         <button id="logoutBtn" onclick="logout()" class="btn btn-danger">تسجيل الخروج</button>
+                         <button onclick="logout()" class="btn btn-danger">تسجيل الخروج</button>
                     </div>
                 </div>
                 
@@ -690,378 +293,303 @@ value {
                 <div class="card">
                     <h2 class="title-section" style="margin-bottom: 24px; text-align: center;">لوحة الإدارة</h2>
                     
-                    <!-- Admin Stats -->
                     <div class="grid grid-cols-4" style="margin-bottom: 32px;">
-                        <div class="stat-card">
-                            <h3 style="font-size: 32px; font-weight: bold; margin-bottom: 8px;" id="totalUsers">0</h3>
-                            <p>إجمالي المستخدمين</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3 style="font-size: 32px; font-weight: bold; margin-bottom: 8px;" id="onlineUsers">0</h3>
-                            <p>المتصلون الآن</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3 style="font-size: 32px; font-weight: bold; margin-bottom: 8px;" id="totalRooms">0</h3>
-                            <p>إجمالي الغرف</p>
-                        </div>
-                        <div class="stat-card">
-                            <h3 style="font-size: 32px; font-weight: bold; margin-bottom: 8px;" id="totalMessages">0</h3>
-                            <p>إجمالي الرسائل</p>
-                        </div>
+                        <div class="stat-card"><h3 id="totalUsers" style="font-size: 32px; font-weight: bold; margin-bottom: 8px;">0</h3><p>إجمالي المستخدمين</p></div>
+                        <div class="stat-card"><h3 id="onlineUsers" style="font-size: 32px; font-weight: bold; margin-bottom: 8px;">0</h3><p>المتصلون الآن</p></div>
+                        <div class="stat-card"><h3 id="totalRooms" style="font-size: 32px; font-weight: bold; margin-bottom: 8px;">0</h3><p>إجمالي الغرف</p></div>
+                        <div class="stat-card"><h3 id="totalMessages" style="font-size: 32px; font-weight: bold; margin-bottom: 8px;">0</h3><p>إجمالي الرسائل</p></div>
                     </div>
 
-                    <!-- Admin Tabs -->
-                    <div style="border-bottom: 2px solid #e5e7eb; margin-bottom: 24px;">
-                        <button class="tab-button active" onclick="switchAdminTab(event, 'users')">إدارة المستخدمين</button>
-                        <button class="tab-button" onclick="switchAdminTab(event, 'rooms')">إدارة الغرف</button>
-                        <button class="tab-button" onclick="switchAdminTab(event, 'messages')">إدارة الرسائل</button>
-                        <button class="tab-button" onclick="switchAdminTab(event, 'notifications')">إرسال تنبيه</button>
-                        <button class="tab-button" onclick="switchAdminTab(event, 'coins')">إدارة الكوينز</button>
-                        <button class="tab-button" onclick="switchAdminTab(event, 'header-settings')">إعدادات الهيدر</button>
-                        <button class="tab-button" onclick="switchAdminTab(event, 'ads')">إدارة الإعلانات</button>
+                    <div class="tab-buttons" style="display: flex; justify-content: center; margin-bottom: 24px;">
+                        <button class="tab-button active" onclick="switchAdminTab('users')">إدارة المستخدمين</button>
+                        <button class="tab-button" onclick="switchAdminTab('rooms')">إدارة الغرف</button>
+                        <button class="tab-button" onclick="switchAdminTab('ads')">إدارة الإعلانات</button>
                     </div>
 
-                    <div class="admin-tabs-content">
-                        <!-- Users Tab -->
-                        <div id="usersTab" class="admin-tab">
-                            <div style="overflow-x: auto;">
-                                <table id="usersTable">
-                                    <thead>
-                                        <tr>
-                                            <th>الصورة</th>
-                                            <th>الاسم</th>
-                                            <th>البريد الإلكتروني</th>
-                                            <th>الدور</th>
-                                            <th>الحالة</th>
-                                            <th>الكوينز</th>
-                                            <th>الإجراءات</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="usersTableBody"></tbody>
-                                </table>
-                            </div>
-                        </div>
+                    <div id="adminUsersTab">
+                        <h3 style="margin-bottom: 16px;">قائمة المستخدمين</h3>
+                        <div id="userList"></div>
+                    </div>
 
-                        <!-- Rooms Tab -->
-                        <div id="roomsTab" class="admin-tab hidden">
-                            <button onclick="showAddRoomModal()" class="btn btn-success" style="margin-bottom: 16px;">إضافة غرفة جديدة</button>
-                            <div style="overflow-x: auto;">
-                                <table id="roomsTable">
-                                    <thead>
-                                        <tr>
-                                            <th>الصورة</th>
-                                            <th>اسم الغرفة</th>
-                                            <th>الوصف</th>
-                                            <th>عدد الرسائل</th>
-                                            <th>مخفية</th>
-                                            <th>الإجراءات</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="roomsTableBody"></tbody>
-                                </table>
-                            </div>
-                        </div>
+                    <div id="adminRoomsTab" class="hidden">
+                        <h3 style="margin-bottom: 16px;">قائمة الغرف</h3>
+                        <div id="roomList"></div>
+                        <button class="btn btn-primary" style="margin-top: 20px;" onclick="showCreateRoomModal()">إنشاء غرفة جديدة</button>
+                    </div>
 
-                        <!-- Messages Tab -->
-                        <div id="messagesTab" class="admin-tab hidden">
-                            <div style="margin-bottom: 16px;">
-                                <select id="roomSelect" class="input-field" onchange="loadRoomMessages()">
-                                    <option value="">اختر غرفة</option>
-                                </select>
-                            </div>
-                            <div id="roomMessagesContainer">
-                                <p style="text-align: center; color: #6b7280;">اختر غرفة لعرض الرسائل</p>
-                            </div>
-                        </div>
-
-                        <!-- Notifications Tab -->
-                        <div id="notificationsTab" class="admin-tab hidden">
-                            <div style="max-width: 500px; margin: 0 auto;">
-                                <h3 style="margin-bottom: 16px;">إرسال تنبيه لجميع المستخدمين</h3>
-                                <textarea id="notificationText" placeholder="اكتب التنبيه هنا..." class="input-field" rows="4"></textarea>
-                                <button onclick="sendGlobalNotification()" class="btn btn-primary" style="width: 100%;">إرسال التنبيه</button>
-                            </div>
-                        </div>
-
-                        <!-- Coins Tab -->
-                        <div id="coinsTab" class="admin-tab hidden">
-                            <div style="max-width: 500px; margin: 0 auto;">
-                                <h3 style="margin-bottom: 16px;">إرسال كوينز للمستخدمين</h3>
-                                <select id="userSelect" class="input-field">
-                                    <option value="">اختر مستخدم</option>
-                                </select>
-                                <input type="number" id="coinsAmount" placeholder="عدد الكوينز" class="input-field" min="1">
-                                <button onclick="sendCoins()" class="btn btn-primary" style="width: 100%;">إرسال الكوينز</button>
-                            </div>
-                        </div>
-                        
-                        <!-- Header Settings Tab -->
-                        <div id="header-settingsTab" class="admin-tab hidden">
-                            <h3 class="title-section" style="margin-bottom: 1rem;">إعدادات الهيدر</h3>
-                            <div style="margin-bottom: 1rem;">
-                                <label for="header-image-url" style="display: block; color: #4a5568; font-size: 0.875rem; font-weight: bold; margin-bottom: 0.5rem;">رابط صورة الهيدر:</label>
-                                <input type="text" id="header-image-url" class="input-field" placeholder="أدخل رابط صورة الهيدر هنا...">
-                                <button id="save-header-image-btn" class="btn btn-primary" onclick="updateHeaderImage()">حفظ صورة الهيدر</button>
-                            </div>
-                        </div>
-
-                        <!-- Ads Management Tab -->
-                        <div id="adsTab" class="admin-tab hidden">
-                            <h3 class="title-section" style="margin-bottom: 1rem;">إدارة الإعلانات</h3>
-                            <div style="margin-bottom: 1rem;">
-                                <input type="text" id="ad-text-input" class="input-field" placeholder="أدخل نص الإعلان هنا...">
-                                <button id="add-ad-btn" class="btn btn-primary" onclick="addAd()">إضافة إعلان</button>
-                            </div>
-                            <div id="ads-list"></div>
-                        </div>
+                    <div id="adminAdsTab" class="hidden">
+                        <h3 style="margin-bottom: 16px;">إدارة الإعلانات</h3>
+                        <input type="text" id="newAdInput" placeholder="نص الإعلان الجديد" class="input-field">
+                        <button class="btn btn-primary" onclick="addAd()">إضافة إعلان</button>
+                        <div id="ads-list" style="margin-top: 20px;"></div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Modals that are appended to the body -->
-    <div id="admin-contact-modal" class="modal">
-        <div class="modal-content">
-            <h2 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">راسل الإدارة</h2>
-            <textarea id="admin-contact-message" class="input-field" style="height: 8rem;" placeholder="اكتب رسالتك هنا..."></textarea>
-            <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
-                <button class="btn btn-danger" onclick="closeAdminContactModal()">إلغاء</button>
-                <button class="btn btn-primary" onclick="sendAdminContactMessage()">إرسال</button>
-            </div>
-        </div>
-    </div>
+            <!-- Profile View -->
+            <div id="profileView" class="modal">
+                <div class="modal-content profile-modal">
+                    <button onclick="closeModal('profileView')" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+                    <div class="profile-header">
+                        <img id="profileAvatar" class="profile-avatar" src="https://via.placeholder.com/100" alt="Avatar">
+                        <h2 id="profileName" style="font-size: 24px; font-weight: bold; margin-bottom: 4px;">اسم المستخدم</h2>
+                        <p id="profileEmail" style="color: #6b7280; margin-bottom: 8px;">البريد الإلكتروني</p>
+                        <span id="profileRole" class="user-badge user-badge-default">عضو</span>
+                    </div>
 
-    <div id="profileModal" class="modal">
-        <div class="modal-content profile-modal">
-            <h2 style="text-align: center; margin-bottom: 24px;">الملف الشخصي</h2>
-            
-            <div class="profile-header">
-                <img id="profileAvatar" class="profile-avatar" src="">
-                <h3 id="profileName" style="font-size: 24px; font-weight: bold; margin-bottom: 8px;"></h3>
-                <p id="profileEmail" style="color: #4a5568; margin-bottom: 0.5rem;"></p>
-                <div id="profileRole" class="user-badge" style="margin-top: 8px;"></div>
-            </div>
-            
-            <div class="profile-stats">
-                <div class="stat-item">
-                    <div class="stat-value" id="profileCoins">0</div>
-                    <div class="stat-label">الكوينز</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="profileMessages">0</div>
-                    <div class="stat-label">الرسائل</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="profileJoinDate">-</div>
-                    <div class="stat-label">تاريخ الانضمام</div>
-                </div>
-            </div>
-            
-            <div style="margin-bottom: 16px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 600;">السيرة الذاتية:</label>
-                <textarea id="profileBio" class="input-field" rows="3" placeholder="اكتب شيئاً عن نفسك..."></textarea>
-            </div>
-            
-            <div style="margin-bottom: 16px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 600;">الاسم:</label>
-                <input type="text" id="profileNameEdit" class="input-field">
-            </div>
-            
-            <div style="margin-bottom: 16px;">
-                <label style="display: block; margin-bottom: 8px; font-weight: 600;">اختر صورة شخصية:</label>
-                <div class="file-upload" style="width: 100%;">
-                    <input type="file" id="profileImageUpload" accept="image/*" onchange="handleProfileImageUpload(event)">
-                    <div class="file-upload-btn" style="width: 100%; text-align: center;">اختر صورة من الهاتف</div>
-                </div>
-                <div style="margin-top: 16px;">
-                    <p style="margin-bottom: 8px; font-weight: 600;">أو اختر من الصور المتاحة:</p>
-                    <div id="avatarOptions" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 12px;"></div>
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <div id="profileCoins" class="stat-value">0</div>
+                            <div class="stat-label">عملة</div>
+                        </div>
+                        <div class="stat-item">
+                            <div id="profileMessages" class="stat-value">0</div>
+                            <div class="stat-label">رسالة</div>
+                        </div>
+                        <div class="stat-item">
+                            <div id="profileJoinDate" class="stat-value">--</div>
+                            <div class="stat-label">تاريخ الانضمام</div>
+                        </div>
+                    </div>
+
+                    <div id="profileEditSection" class="hidden">
+                        <h3 style="margin-bottom: 16px;">تعديل الملف الشخصي</h3>
+                        <input type="text" id="profileNameEdit" placeholder="الاسم" class="input-field">
+                        <textarea id="profileBio" placeholder="نبذة عني" class="input-field" rows="3"></textarea>
+                        <h4 style="margin-bottom: 8px;">اختر صورة رمزية:</h4>
+                        <div id="avatarOptions" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px;">
+                            <!-- Avatars will be injected here -->
+                        </div>
+                        <button onclick="updateProfile()" class="btn btn-primary" style="width: 100%;">حفظ التعديلات</button>
+                    </div>
+
+                    <div id="profileActionsSection" style="text-align: center;">
+                        <button id="editProfileBtn" onclick="toggleProfileEdit()" class="btn btn-primary" style="margin-top: 16px;">تعديل الملف الشخصي</button>
+                        <button id="privateMessageBtn" class="private-message-btn hidden" onclick="startPrivateChat()">إرسال رسالة خاصة</button>
+                        <button id="adminActionsBtn" class="btn btn-danger hidden" onclick="showAdminActionsModal()">إجراءات المدير</button>
+                    </div>
                 </div>
             </div>
-            
-            <button id="privateMessageBtn" class="private-message-btn" onclick="openPrivateMessage()" style="width: 100%; display: none;">
-                إرسال رسالة خاصة (1 كوين)
-            </button>
-            
-            <div style="display: flex; gap: 12px; margin-top: 16px;">
-                <button onclick="updateProfile()" class="btn btn-primary" style="flex: 1;">حفظ التغييرات</button>
-                <button onclick="closeProfileModal()" class="btn" style="flex: 1; background: #6b7280; color: white;">إلغاء</button>
-            </div>
-        </div>
-    </div>
 
-    <div id="addRoomModal" class="modal">
-        <div class="modal-content">
-            <h2 style="margin-bottom: 24px;">إضافة غرفة جديدة</h2>
-            <input type="text" id="newRoomName" placeholder="اسم الغرفة" class="input-field">
-            <textarea id="newRoomDesc" placeholder="وصف الغرفة" class="input-field" rows="3"></textarea>
-            <input type="url" id="newRoomImage" placeholder="رابط صورة الغرفة" class="input-field">
-            <div style="margin-bottom: 16px;">
-                <label style="display: flex; align-items: center; gap: 8px;">
-                    <input type="checkbox" id="newRoomHidden">
-                    <span>غرفة مخفية (للإداريين فقط)</span>
-                </label>
+            <!-- Private Messages View -->
+            <div id="privateMessagesView" class="hidden">
+                <div class="card">
+                    <h2 class="title-section" style="margin-bottom: 24px; text-align: center;">الرسائل الخاصة</h2>
+                    <div id="privateChatsList"></div>
+                </div>
             </div>
-            <div style="display: flex; gap: 12px;">
-                <button onclick="addRoom()" class="btn btn-success" style="flex: 1;">إضافة</button>
-                <button onclick="closeAddRoomModal()" class="btn" style="flex: 1; background: #6b7280; color: white;">إلغاء</button>
-            </div>
-        </div>
-    </div>
 
-    <div id="editRoomModal" class="modal">
-        <div class="modal-content">
-            <h2 style="margin-bottom: 24px;">تعديل الغرفة</h2>
-            <input type="hidden" id="editRoomId">
-            <input type="text" id="editRoomName" placeholder="اسم الغرفة" class="input-field">
-            <textarea id="editRoomDesc" placeholder="وصف الغرفة" class="input-field" rows="3"></textarea>
-            <input type="url" id="editRoomImage" placeholder="رابط صورة الغرفة" class="input-field">
-            <div style="margin-bottom: 16px;">
-                <label style="display: flex; align-items: center; gap: 8px;">
-                    <input type="checkbox" id="editRoomHidden">
-                    <span>غرفة مخفية (للإداريين فقط)</span>
-                </label>
+            <!-- Private Chat View -->
+            <div id="privateChatView" class="chat-container hidden">
+                <div class="header">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <button onclick="goBackToPrivateChats()" class="btn btn-primary">→ رجوع</button>
+                        <div>
+                            <h3 id="privateChatUserName" class="title-main"></h3>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                         <button onclick="logout()" class="btn btn-danger">تسجيل الخروج</button>
+                    </div>
+                </div>
+                
+                <div class="messages-container" id="privateMessagesContainer"></div>
+                
+                <div class="message-input-container">
+                    <input type="text" id="privateMessageInput" placeholder="اكتب رسالتك الخاصة هنا..." style="flex: 1; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px;">
+                    <button onclick="sendPrivateMessage()" class="btn btn-primary">إرسال</button>
+                </div>
             </div>
-            <div style="display: flex; gap: 12px;">
-                <button onclick="updateRoom()" class="btn btn-success" style="flex: 1;">حفظ</button>
-                <button onclick="closeEditRoomModal()" class="btn" style="flex: 1; background: #6b7280; color: white;">إلغاء</button>
-            </div>
-        </div>
-    </div>
 
-    <div id="privateMessagesModal" class="modal">
-        <div class="modal-content">
-            <h2 style="margin-bottom: 24px;">الرسائل الخاصة</h2>
-            <div id="privateMessagesContainer">
-                <p style="text-align: center; color: #6b7280;">لا توجد رسائل خاصة</p>
+            <!-- Create Room Modal -->
+            <div id="createRoomModal" class="modal">
+                <div class="modal-content">
+                    <button onclick="closeModal('createRoomModal')" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+                    <h2 style="text-align: center; margin-bottom: 24px;">إنشاء غرفة جديدة</h2>
+                    <input type="text" id="newRoomName" placeholder="اسم الغرفة" class="input-field">
+                    <textarea id="newRoomDescription" placeholder="وصف الغرفة" class="input-field" rows="3"></textarea>
+                    <label style="display: block; margin-bottom: 8px;">
+                        <input type="checkbox" id="newRoomIsHidden"> غرفة خاصة (مخفية)
+                    </label>
+                    <button onclick="createRoom()" class="btn btn-primary" style="width: 100%;">إنشاء</button>
+                </div>
             </div>
-            <button onclick="closePrivateMessagesModal()" class="btn" style="background: #6b7280; color: white; width: 100%; margin-top: 1rem;">إغلاق</button>
+
+            <!-- Admin Actions Modal -->
+            <div id="adminActionsModal" class="modal">
+                <div class="modal-content">
+                    <button onclick="closeModal('adminActionsModal')" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+                    <h2 style="text-align: center; margin-bottom: 24px;">إجراءات المدير على <span id="adminActionUserName"></span></h2>
+                    <div id="adminActionsContent">
+                        <button id="banUserBtn" class="btn btn-danger" style="width: 100%; margin-bottom: 10px;" onclick="banUser()">حظر المستخدم</button>
+                        <button id="unbanUserBtn" class="btn btn-success hidden" style="width: 100%; margin-bottom: 10px;" onclick="unbanUser()">إلغاء حظر المستخدم</button>
+                        <button id="promoteToModBtn" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="promoteUser('moderator')">ترقية إلى مشرف</button>
+                        <button id="demoteFromModBtn" class="btn btn-danger hidden" style="width: 100%; margin-bottom: 10px;" onclick="promoteUser('user')">تخفيض من مشرف</button>
+                        <button id="promoteToAdminBtn" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="promoteUser('admin')">ترقية إلى مدير</button>
+                        <button id="demoteFromAdminBtn" class="btn btn-danger hidden" style="width: 100%; margin-bottom: 10px;" onclick="promoteUser('user')">تخفيض من مدير</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Contact Modal -->
+            <div id="adminContactModal" class="modal">
+                <div class="modal-content">
+                    <button onclick="closeModal('adminContactModal')" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+                    <h2 style="text-align: center; margin-bottom: 24px;">راسل الإدارة</h2>
+                    <textarea id="adminContactMessage" placeholder="اكتب رسالتك للإدارة هنا..." class="input-field" rows="5"></textarea>
+                    <button onclick="sendAdminContactMessage()" class="btn btn-primary" style="width: 100%;">إرسال الرسالة</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <script>
         // =================================================================
-        // FIREBASE CONFIGURATION
+        // FIREBASE CONFIGURATION & INITIALIZATION
         // =================================================================
+        
+        // ** تم دمج إعدادات Firebase الجديدة هنا **
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyAyn2M8LGYpCFFMY1jsZzc80f0H9mVvh6Q",
+            authDomain: "chate-2d1d1.firebaseapp.com",
+            projectId: "chate-2d1d1",
+            storageBucket: "chate-2d1d1.firebasestorage.app",
+            messagingSenderId: "34207834349",
+            appId: "1:34207834349:web:3c4c5971f3131ca1536ce4",
+            measurementId: "G-SKTRYF395G"
         };
 
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        const storage = firebase.storage();
+        // Initialize Firebase App
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = app.auth();
+        const db = app.firestore();
+        const storage = app.storage();
 
-        // =================================================================
-        // GLOBAL VARIABLES & STATE
-        // =================================================================
+        // Global state variables
         let currentUser = null;
         let currentRoom = null;
         let messagesListener = null;
-        let usersListener = null;
-        let selectedAvatar = null;
+        let privateMessagesListener = null;
+        let currentPrivateChatId = null;
         let currentProfileUserId = null;
+        let currentAdminActionUserId = null;
+        let currentAdminActionUserData = null;
 
         // =================================================================
         // AUTHENTICATION
         // =================================================================
 
-        auth.onAuthStateChanged(user => {
+        auth.onAuthStateChanged(async (user) => {
             if (user) {
-                handleAuthSuccess(user);
+                await handleUserLogin(user);
             } else {
-                currentUser = null;
-                showLogin();
+                handleUserLogout();
             }
         });
 
-        function loginWithGoogle() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider)
-                .then((result) => {
-                    console.log("Google sign-in successful for:", result.user.displayName);
-                })
-                .catch((error) => {
-                    console.error("Google sign-in error: ", error);
-                    if (error.code === 'auth/popup-blocked-by-browser') {
-                        alert('قام المتصفح بمنع النافذة المنبثقة. الرجاء السماح بالنوافذ المنبثقة لهذا الموقع.');
-                    } else if (error.code !== 'auth/popup-closed-by-user') {
-                        alert('حدث خطأ أثناء تسجيل الدخول عبر جوجل: ' + error.message);
-                    }
-                });
+        async function handleUserLogin(user) {
+            try {
+                const userRef = db.collection('users').doc(user.uid);
+                const userDoc = await userRef.get();
+
+                if (!userDoc.exists) {
+                    // New user registration
+                    currentUser = {
+                        id: user.uid,
+                        name: user.displayName || 'مستخدم جديد',
+                        email: user.email,
+                        avatar: user.photoURL || 'https://via.placeholder.com/100',
+                        role: 'user',
+                        coins: 0,
+                        messageCount: 0,
+                        bio: '',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        isBanned: false,
+                        blockedUsers: []
+                    };
+                    await userRef.set(currentUser);
+                } else {
+                    currentUser = { id: user.uid, ...userDoc.data() };
+                    // Update last login time and online status
+                    await userRef.update({
+                        lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+                        isOnline: true
+                    });
+                }
+
+                // Ensure currentUser has necessary fields
+                currentUser.blockedUsers = currentUser.blockedUsers || [];
+                currentUser.isBanned = currentUser.isBanned || false;
+                
+                if (currentUser.isBanned) {
+                    alert('تم حظرك من استخدام هذا التطبيق.');
+                    await auth.signOut();
+                    return;
+                }
+
+                document.getElementById('loginModal').classList.remove('active');
+                document.getElementById('mainContainer').classList.remove('hidden');
+                
+                updateHeaderUI();
+                showRooms();
+                initializeEmojiPicker();
+                listenForNotifications();
+                listenForAds();
+                
+                if (currentUser.role === 'admin') {
+                    document.getElementById('adminBtn').classList.remove('hidden');
+                    showAdminNotification();
+                }
+
+            } catch (error) {
+                console.error("Error handling user login:", error);
+                showNotification('حدث خطأ أثناء تسجيل الدخول. حاول مرة أخرى.', 'error');
+                await auth.signOut();
+            }
+        }
+
+        function handleUserLogout() {
+            currentUser = null;
+            currentRoom = null;
+            if (messagesListener) messagesListener();
+            if (privateMessagesListener) privateMessagesListener();
+            
+            document.getElementById('loginModal').classList.add('active');
+            document.getElementById('mainContainer').classList.add('hidden');
+            document.getElementById('adminBtn').classList.add('hidden');
+        }
+
+        async function loginWithGoogle() {
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                await auth.signInWithPopup(provider);
+            } catch (error) {
+                console.error("Google login error:", error);
+                showNotification('فشل تسجيل الدخول بـ Google: ' + error.message, 'error');
+            }
         }
 
         async function loginWithEmail() {
-            const email = document.getElementById('emailInput').value.trim();
+            const email = document.getElementById('emailInput').value;
             const password = document.getElementById('passwordInput').value;
-            if (!email || !password) return alert('الرجاء إدخال البريد الإلكتروني وكلمة المرور');
             try {
                 await auth.signInWithEmailAndPassword(email, password);
             } catch (error) {
-                console.error("Email login error: ", error);
-                alert('خطأ في تسجيل الدخول: ' + error.message);
+                console.error("Email login error:", error);
+                showNotification('فشل تسجيل الدخول: ' + error.message, 'error');
             }
         }
 
         async function registerWithEmail() {
-            const email = document.getElementById('emailInput').value.trim();
+            const email = document.getElementById('emailInput').value;
             const password = document.getElementById('passwordInput').value;
-            if (!email || !password) return alert('الرجاء إدخال البريد الإلكتروني وكلمة المرور');
-            if (password.length < 6) return alert('كلمة المرور يجب أن تكون 6 أحرف على الأقل');
-            
             try {
-                await auth.createUserWithEmailAndPassword(email, password);
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                // The handleUserLogin will take care of the rest
             } catch (error) {
-                console.error("Email registration error: ", error);
-                alert('خطأ في إنشاء الحساب: ' + error.message);
-            }
-        }
-
-        async function handleAuthSuccess(user) {
-            try {
-                const userDocRef = db.collection('users').doc(user.uid);
-                const userDoc = await userDocRef.get();
-                
-                if (userDoc.exists) {
-                    currentUser = { id: user.uid, ...userDoc.data() };
-                    await userDocRef.update({
-                        status: 'online',
-                        lastSeen: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                } else {
-                    const userData = {
-                        id: user.uid,
-                        name: user.displayName || user.email.split('@')[0],
-                        email: user.email,
-                        avatar: user.photoURL || `https://i.pravatar.cc/150?u=${user.uid}`,
-                        role: 'user',
-                        status: 'online',
-                        banned: false,
-                        coins: 0,
-                        bio: '',
-                        blockedUsers: [],
-                        messageCount: 0,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp( ),
-                        lastSeen: firebase.firestore.FieldValue.serverTimestamp()
-                    };
-                    await userDocRef.set(userData);
-                    currentUser = userData;
-                }
-                
-                updateHeader();
-                showRooms();
-                listenForNotifications();
-                loadAds();
-                
-            } catch (error) {
-                console.error("Error handling auth success: ", error);
-                alert('خطأ في تحميل بيانات المستخدم: ' + error.message);
+                console.error("Email registration error:", error);
+                showNotification('فشل إنشاء الحساب: ' + error.message, 'error');
             }
         }
 
@@ -1069,153 +597,195 @@ value {
             try {
                 if (currentUser) {
                     await db.collection('users').doc(currentUser.id).update({
-                        status: 'offline',
-                        lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+                        isOnline: false
                     });
                 }
                 await auth.signOut();
             } catch (error) {
-                console.error("Error during logout: ", error);
-                alert('خطأ في تسجيل الخروج: ' + error.message);
+                console.error("Logout error:", error);
+                showNotification('فشل تسجيل الخروج: ' + error.message, 'error');
             }
         }
 
         // =================================================================
-        // UI & VIEW MANAGEMENT
+        // UI MANAGEMENT
         // =================================================================
 
-        function hideAllViews() {
-            document.getElementById('loginModal').classList.remove('active');
-            document.getElementById('mainContainer').classList.add('hidden');
-            document.querySelectorAll('#viewsContainer > div').forEach(view => view.classList.add('hidden'));
-        }
-
-        function showLogin() {
-            hideAllViews();
-            document.getElementById('loginModal').classList.add('active');
-        }
-
-        function updateHeader() {
-            if (!currentUser) return;
-            
-            const avatarElements = ['userAvatarBtn2'];
-            const nameElements = ['userNameDisplay2'];
-            const coinsElements = ['userCoinsDisplay2'];
-            const coinsCountElements = ['userCoinsCount2'];
-            
-            avatarElements.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    el.src = currentUser.avatar;
-                    el.classList.remove('hidden');
-                }
-            });
-            
-            nameElements.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.textContent = currentUser.name;
-            });
-            
-            if (currentUser.coins > 0) {
-                coinsElements.forEach(id => document.getElementById(id)?.classList.remove('hidden'));
-                coinsCountElements.forEach(id => document.getElementById(id).textContent = currentUser.coins);
-            } else {
-                 coinsElements.forEach(id => document.getElementById(id)?.classList.add('hidden'));
+        function updateHeaderUI() {
+            if (currentUser) {
+                document.getElementById('userNameDisplay2').textContent = currentUser.name;
+                document.getElementById('userAvatarBtn2').src = currentUser.avatar;
+                document.getElementById('userAvatarBtn2').classList.remove('hidden');
+                document.getElementById('userCoinsCount2').textContent = currentUser.coins || 0;
+                document.getElementById('userCoinsDisplay2').classList.remove('hidden');
             }
-            
-            document.getElementById('adminBtn').classList.toggle('hidden', currentUser.role !== 'admin');
         }
 
         function showRooms() {
-            hideAllViews();
-            document.getElementById('mainContainer').classList.remove('hidden');
             document.getElementById('roomsView').classList.remove('hidden');
-            if (messagesListener) messagesListener(); // Unsubscribe from previous room
+            document.getElementById('chatView').classList.add('hidden');
+            document.getElementById('adminView').classList.add('hidden');
+            document.getElementById('privateMessagesView').classList.add('hidden');
+            document.getElementById('privateChatView').classList.add('hidden');
+            
+            if (messagesListener) {
+                messagesListener();
+                messagesListener = null;
+            }
             currentRoom = null;
             renderRooms();
         }
 
-        function renderRooms() {
-            db.collection('rooms').onSnapshot(snapshot => {
-                const roomsData = snapshot.docs.map(
-doc => ({ id: doc.id, ...doc.data() }));
-                const filteredRooms = roomsData.filter(room => !room.hidden || (currentUser && currentUser.role === 'admin'));
-                
-                const grid = document.getElementById('roomsGrid');
-                grid.innerHTML = filteredRooms.map(room => `
-                    <div class="room-card ${room.hidden ? 'hidden-room' : ''}" onclick="joinRoom('${room.id}')">
-                        <img src="${room.image || 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&h=300&fit=crop'}" alt="${room.name}">
-                        <div class="room-card-content">
-                            <div>
-                                <h3 class="room-card-title">${room.name}</h3>
-                                <p class="room-card-description">${room.description}</p>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <span style="color: #667eea; font-weight: 600; font-size: 14px;">💬 ${room.messageCount || 0} رسالة</span>
-                                <span style="color: #10b981; font-weight: 600; font-size: 14px;">انضم الآن</span>
-                            </div>
-                        </div>
-                    </div>
-                ` ).join('');
-            });
-        }
-
-        function joinRoom(roomId) {
-            hideAllViews();
-            document.getElementById('mainContainer').classList.remove('hidden');
+        function showChat(room) {
+            currentRoom = room;
+            document.getElementById('roomsView').classList.add('hidden');
             document.getElementById('chatView').classList.remove('hidden');
-            initializeEmojiPicker();
+            document.getElementById('chatRoomName').textContent = room.name;
+            document.getElementById('chatRoomDesc').textContent = room.description;
+            document.getElementById('messagesContainer').innerHTML = '';
             
-            db.collection('rooms').doc(roomId).get().then(doc => {
-                if (doc.exists) {
-                    currentRoom = { id: doc.id, ...doc.data() };
-                    document.getElementById('chatRoomName').textContent = currentRoom.name;
-                    document.getElementById('chatRoomDesc').textContent = currentRoom.description;
-                    document.getElementById('chatRoomDesc').classList.remove('hidden');
-                    if (currentUser.role === 'admin') showAdminNotification();
-                    renderMessages();
-                    updateHeader();
-                } else {
-                    alert("الغرفة غير موجودة.");
-                    showRooms();
-                }
-            });
-        }
-
-        function showAdmin() {
-            hideAllViews();
-            document.getElementById('mainContainer').classList.remove('hidden');
-            document.getElementById('adminView').classList.remove('hidden');
-            updateAdminStats();
-            renderAdminUsers();
-            renderAdminRooms();
-            loadRoomSelectOptions();
-            loadUserSelectOptions();
-            renderAdsManagement();
+            renderMessages();
         }
 
         function goBack() {
             showRooms();
         }
 
+        function showAdmin() {
+            if (currentUser.role !== 'admin') return;
+            document.getElementById('roomsView').classList.add('hidden');
+            document.getElementById('chatView').classList.add('hidden');
+            document.getElementById('adminView').classList.remove('hidden');
+            document.getElementById('privateMessagesView').classList.add('hidden');
+            document.getElementById('privateChatView').classList.add('hidden');
+            
+            if (messagesListener) {
+                messagesListener();
+                messagesListener = null;
+            }
+            currentRoom = null;
+            
+            renderAdminDashboard();
+            switchAdminTab('users');
+        }
+
+        function switchAdminTab(tabName) {
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('adminUsersTab').classList.add('hidden');
+            document.getElementById('adminRoomsTab').classList.add('hidden');
+            document.getElementById('adminAdsTab').classList.add('hidden');
+
+            if (tabName === 'users') {
+                document.querySelector('.tab-button:nth-child(1)').classList.add('active');
+                document.getElementById('adminUsersTab').classList.remove('hidden');
+                renderUserList();
+            } else if (tabName === 'rooms') {
+                document.querySelector('.tab-button:nth-child(2)').classList.add('active');
+                document.getElementById('adminRoomsTab').classList.remove('hidden');
+                renderAdminRoomList();
+            } else if (tabName === 'ads') {
+                document.querySelector('.tab-button:nth-child(3)').classList.add('active');
+                document.getElementById('adminAdsTab').classList.remove('hidden');
+                renderAdsManagement();
+            }
+        }
+
+        function showCreateRoomModal() {
+            document.getElementById('createRoomModal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
         // =================================================================
-        // CHAT & MESSAGES
+        // ROOMS MANAGEMENT
+        // =================================================================
+
+        async function renderRooms() {
+            const roomsGrid = document.getElementById('roomsGrid');
+            roomsGrid.innerHTML = 'جاري تحميل الغرف...';
+            
+            try {
+                const snapshot = await db.collection('rooms').orderBy('createdAt', 'asc').get();
+                const rooms = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                roomsGrid.innerHTML = rooms.filter(room => !room.isHidden || currentUser.role === 'admin').map(room => `
+                    <div class="room-card ${room.isHidden ? 'hidden-room' : ''}" onclick="showChat({ id: '${room.id}', name: '${room.name}', description: '${room.description}' })">
+                        <img src="${room.image || 'https://via.placeholder.com/300x200'}" alt="${room.name}">
+                        <div class="room-card-content">
+                            <div>
+                                <div class="room-card-title">${room.name}</div>
+                                <div class="room-card-description">${room.description}</div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.8em; color: #9ca3af;">
+                                <span>💬 ${room.messageCount || 0} رسالة</span>
+                                <span>👥 ${room.onlineUsers || 0} متصل</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                if (rooms.length === 0) {
+                    roomsGrid.innerHTML = '<p style="text-align: center; color: #6b7280;">لا توجد غرف متاحة حالياً.</p>';
+                }
+
+            } catch (error) {
+                console.error("Error rendering rooms:", error);
+                roomsGrid.innerHTML = '<p style="text-align: center; color: #ef4444;">فشل تحميل الغرف.</p>';
+            }
+        }
+
+        async function createRoom() {
+            const name = document.getElementById('newRoomName').value.trim();
+            const description = document.getElementById('newRoomDescription').value.trim();
+            const isHidden = document.getElementById('newRoomIsHidden').checked;
+
+            if (!name || !description) {
+                return showNotification('الرجاء إدخال اسم ووصف للغرفة.', 'error');
+            }
+
+            try {
+                await db.collection('rooms').add({
+                    name,
+                    description,
+                    isHidden,
+                    image: 'https://via.placeholder.com/300x200', // Default image
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    messageCount: 0,
+                    onlineUsers: 0
+                });
+                
+                showNotification('تم إنشاء الغرفة بنجاح!');
+                closeModal('createRoomModal');
+                renderRooms();
+                renderAdminRoomList();
+
+            } catch (error) {
+                console.error("Error creating room:", error);
+                showNotification('فشل إنشاء الغرفة.', 'error');
+            }
+        }
+
+        // =================================================================
+        // CHAT MESSAGES
         // =================================================================
 
         async function sendMessage() {
             const input = document.getElementById('messageInput');
             const content = input.value.trim();
-            if (!content || !currentRoom || !currentUser) return;
-            if (currentUser.banned) return alert('عذراً، تم حظرك من إرسال الرسائل');
             
-            input.value = '';
+            if (!content || !currentRoom || !currentUser) return;
+            
+            input.value = ''; // Clear input immediately
+            
             try {
                 const messageData = {
-                    content: content,
                     userId: currentUser.id,
                     userName: currentUser.name,
                     userAvatar: currentUser.avatar,
-                    role: currentUser.role || 'user',
+                    role: currentUser.role,
+                    content: content,
                     likes: [],
                     likesCount: 0,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
@@ -1234,7 +804,7 @@ doc => ({ id: doc.id, ...doc.data() }));
                 
             } catch (error) {
                 console.error("Error sending message: ", error);
-                input.value = content; // Restore message on error
+                input.value = content;
             }
         }
 
@@ -1252,7 +822,7 @@ doc => ({ id: doc.id, ...doc.data() }));
                         const isSent = msg.userId === currentUser.id;
                         
                         if (currentUser.blockedUsers && currentUser.blockedUsers.includes(msg.userId) && !isSent) {
-                            return ''; // Do not render messages from blocked users
+                            return '';
                         }
 
                         let messageClass = isSent ? 'message-sent' : 'message-received';
@@ -1269,12 +839,11 @@ doc => ({ id: doc.id, ...doc.data() }));
                         return `
                             <div class="message ${messageClass}">
                                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                                    <img src="${displayAvatar}" class="avatar" style="width: 24px; height: 24px; cursor: pointer;" onclick="showUserProfile('${msg.userId}')">
+                                    <img src="${displayAvatar}" class="profile-btn" style="width: 24px; height: 24px;" onclick="showUserProfile('${msg.userId}')">
                                     <strong style="font-size: 14px; cursor: pointer;" onclick="showUserProfile('${msg.userId}')">${displayName}</strong>
                                     ${roleIcon ? `<span style="font-size: 12px;">${roleIcon}</span>` : ''}
                                 </div>
-                                <div>${msg.content.replace(/\n/g, '  
-')}</div>
+                                <div>${msg.content.replace(/\n/g, '<br>')}</div>
                                 <div class="message-actions">
                                     <button class="like-btn ${userLiked ? 'liked' : ''}" onclick="toggleLike('${msg.id}')">
                                         ❤️ ${msg.likesCount || 0}
@@ -1366,506 +935,476 @@ doc => ({ id: doc.id, ...doc.data() }));
                 const isCurrentUser = userId === currentUser.id;
                 document.getElementById('profileBio').value = userData.bio || '';
                 document.getElementById('profileNameEdit').value = userData.name;
-                document.getElementById('profileBio').readOnly = !isCurrentUser;
-                document.getElementById('profileNameEdit').readOnly = !isCurrentUser;
+
+                // Toggle edit section visibility
+                document.getElementById('profileEditSection').classList.toggle('hidden', !isCurrentUser);
+                document.getElementById('editProfileBtn').classList.toggle('hidden', !isCurrentUser);
                 
+                // Toggle private message button
                 const privateMessageBtn = document.getElementById('privateMessageBtn');
-                privateMessageBtn.style.display = 'none';
+                privateMessageBtn.classList.toggle('hidden', isCurrentUser);
                 if (!isCurrentUser) {
-                    privateMessageBtn.style.display = 'block';
-                    if (currentUser.coins > 0) {
-                        privateMessageBtn.disabled = false;
-                        privateMessageBtn.textContent = 'إرسال رسالة خاصة (1 كوين)';
-                    } else {
-                        privateMessageBtn.disabled = true;
-                        privateMessageBtn.textContent = 'لا تملك كوينز كافية للرسائل الخاصة';
-                    }
+                    privateMessageBtn.onclick = () => startPrivateChat(userId, userData.name, userData.avatar);
                 }
-                
-                loadAvatarOptions();
-                document.getElementById('profileModal').classList.add('active');
-                
+
+                // Toggle admin actions button
+                const adminActionsBtn = document.getElementById('adminActionsBtn');
+                const isAdmin = currentUser.role === 'admin';
+                adminActionsBtn.classList.toggle('hidden', !isAdmin || isCurrentUser);
+                if (isAdmin && !isCurrentUser) {
+                    adminActionsBtn.onclick = () => showAdminActionsModal(userId, userData);
+                }
+
+                renderAvatarOptions(userData.avatar);
+                document.getElementById('profileView').classList.add('active');
+
             } catch (error) {
-                console.error('Error loading user profile:', error);
-                alert('حدث خطأ أثناء تحميل الملف الشخصي');
+                console.error("Error showing user profile:", error);
+                showNotification('فشل عرض الملف الشخصي.', 'error');
             }
         }
 
-        function closeProfileModal() {
-            document.getElementById('profileModal').classList.remove('active');
-            currentProfileUserId = null;
-            selectedAvatar = null;
+        function toggleProfileEdit() {
+            const editSection = document.getElementById('profileEditSection');
+            editSection.classList.toggle('hidden');
         }
 
-        function loadAvatarOptions() {
-            const avatarOptions = [
-                'https://i.pravatar.cc/150?u=1', 'https://i.pravatar.cc/150?u=2',
-                'https://i.pravatar.cc/150?u=3', 'https://i.pravatar.cc/150?u=4',
-                'https://i.pravatar.cc/150?u=5', 'https://i.pravatar.cc/150?u=6'
+        function renderAvatarOptions(currentAvatar) {
+            const avatars = [
+                'https://via.placeholder.com/100/FF5733/FFFFFF?text=A1',
+                'https://via.placeholder.com/100/33FF57/FFFFFF?text=A2',
+                'https://via.placeholder.com/100/3357FF/FFFFFF?text=A3',
+                'https://via.placeholder.com/100/FF33A1/FFFFFF?text=A4',
+                'https://via.placeholder.com/100/33FFF6/FFFFFF?text=A5',
+                'https://via.placeholder.com/100/F3FF33/FFFFFF?text=A6',
             ];
-            const container = document.getElementById('avatarOptions' );
-            container.innerHTML = avatarOptions.map(avatar => `<img src="${avatar}" class="avatar-option" onclick="selectAvatar(event, '${avatar}')">`).join('');
+            const container = document.getElementById('avatarOptions');
+            container.innerHTML = avatars.map(url => `
+                <img src="${url}" class="avatar-option ${url === currentAvatar ? 'selected' : ''}" onclick="selectAvatar('${url}')">
+            `).join('');
         }
 
-        function selectAvatar(event, avatar) {
-            selectedAvatar = avatar;
+        function selectAvatar(url) {
             document.querySelectorAll('.avatar-option').forEach(img => img.classList.remove('selected'));
-            event.target.classList.add('selected');
-        }
-
-        async function handleProfileImageUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            if (file.size > 5 * 1024 * 1024) return alert('حجم الصورة يجب أن يكون أقل من 5 ميجابايت');
-            
-            try {
-                const storageRef = storage.ref(`avatars/${currentUser.id}/${Date.now()}_${file.name}`);
-                const snapshot = await storageRef.put(file);
-                const downloadURL = await snapshot.ref.getDownloadURL();
-                
-                selectedAvatar = downloadURL;
-                document.getElementById('profileAvatar').src = downloadURL;
-                showNotification('تم رفع الصورة بنجاح!');
-                
-            } catch (error) {
-                console.error('Error uploading image:', error);
-                alert('حدث خطأ أثناء رفع الصورة');
-            }
+            document.querySelector(`.avatar-option[src="${url}"]`).classList.add('selected');
+            document.getElementById('profileAvatar').src = url;
         }
 
         async function updateProfile() {
-            if (currentProfileUserId !== currentUser.id) return alert('لا يمكنك تعديل ملف شخصي آخر');
-            
             const newName = document.getElementById('profileNameEdit').value.trim();
             const newBio = document.getElementById('profileBio').value.trim();
-            if (!newName) return alert('الرجاء إدخال اسم');
-            
+            const newAvatar = document.querySelector('.avatar-option.selected').src;
+
+            if (!newName) {
+                return showNotification('الاسم لا يمكن أن يكون فارغاً.', 'error');
+            }
+
             try {
-                const updates = { name: newName, bio: newBio };
-                if (selectedAvatar) updates.avatar = selectedAvatar;
+                await db.collection('users').doc(currentUser.id).update({
+                    name: newName,
+                    bio: newBio,
+                    avatar: newAvatar
+                });
                 
-                await db.collection('users').doc(currentUser.id).update(updates);
-                currentUser = { ...currentUser, ...updates };
-                updateHeader();
-                closeProfileModal();
+                currentUser.name = newName;
+                currentUser.bio = newBio;
+                currentUser.avatar = newAvatar;
+                
+                updateHeaderUI();
                 showNotification('تم تحديث الملف الشخصي بنجاح!');
+                showUserProfile(currentUser.id); // Re-render profile modal
                 
             } catch (error) {
-                console.error('Error updating profile:', error);
-                alert('حدث خطأ أثناء تحديث الملف الشخصي');
+                console.error("Error updating profile:", error);
+                showNotification('فشل تحديث الملف الشخصي.', 'error');
             }
         }
 
         // =================================================================
-        // ADMIN PANEL
-        // =================================================================
-
-        var switchAdminTab = function(event, tabName) {
-            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.admin-tab').forEach(t => t.classList.add('hidden'));
-            event.target.classList.add('active');
-            document.getElementById(tabName + 'Tab').classList.remove('hidden');
-
-            if (tabName === 'header-settings') {
-                loadHeaderImageUrl();
-            } else if (tabName === 'ads') {
-                renderAdsManagement();
-            }
-        };
-
-        function updateAdminStats() {
-            db.collection('users').onSnapshot(snap => {
-                document.getElementById('totalUsers').textContent = snap.size;
-                document.getElementById('onlineUsers').textContent = snap.docs.filter(doc => doc.data().status === 'online').length;
-            });
-            db.collection('rooms').onSnapshot(snap => {
-                document.getElementById('totalRooms').textContent = snap.size;
-                let totalMessages = 0;
-                snap.docs.forEach(doc => { totalMessages += (doc.data().messageCount || 0); });
-                document.getElementById('totalMessages').textContent = totalMessages;
-            });
-        }
-
-        function renderAdminUsers() {
-            if (usersListener) usersListener();
-            usersListener = db.collection('users').onSnapshot(snapshot => {
-                const tbody = document.getElementById('usersTableBody');
-                tbody.innerHTML = snapshot.docs.map(doc => {
-                    const user = {id: doc.id, ...doc.data()};
-                    const statusColor = user.status === 'online' ? '#10b981' : '#6b7280';
-                    
-                    return `
-                        <tr>
-                            <td><img src="${user.avatar}" class="avatar"></td>
-                            <td>${user.name}</td>
-                            <td>${user.email}</td>
-                            <td><span class="user-badge ${getRoleClass(user.role)}">${getRoleText(user.role)}</span></td>
-                            <td><span style="color: ${statusColor}; font-weight: 600;">${user.status === 'online' ? 'متصل' : 'غير متصل'}</span></td>
-                            <td><span class="coins-display">${user.coins || 0} 🪙</span></td>
-                            <td>
-                                ${user.role !== 'admin' ? `<button class="action-btn btn-promote" onclick="promoteUser('${user.id}')">ترقية</button>` : ''}
-                                ${user.role === 'moderator' ? `<button class="action-btn btn-demote" onclick="demoteUser('${user.id}')">تخفيض</button>` : ''}
-                                ${!user.banned ? `<button class="action-btn btn-ban" onclick="banUser('${user.id}')">حظر</button>` : `<button class="action-btn btn-unban" onclick="unbanUser('${user.id}')">إلغاء الحظر</button>`}
-                            </td>
-                        </tr>
-                    `;
-                }).join('');
-            });
-        }
-
-        function renderAdminRooms() {
-            db.collection('rooms').onSnapshot(snapshot => {
-                const tbody = document.getElementById('roomsTableBody');
-                tbody.innerHTML = snapshot.docs.map(doc => {
-                    const room = { id: doc.id, ...doc.data() };
-                    return `
-                        <tr>
-                            <td><img src="${room.image}" class="avatar"></td>
-                            <td>${room.name}</td>
-                            <td>${room.description}</td>
-                            <td>${room.messageCount || 0}</td>
-                            <td>${room.hidden ? 'نعم' : 'لا'}</td>
-                            <td>
-                                <button class="action-btn btn-promote" onclick="showEditRoomModal('${room.id}')">تعديل</button>
-                                <button class="action-btn btn-ban" onclick="deleteRoom('${room.id}')">حذف</button>
-                            </td>
-                        </tr>
-                    `;
-                }).join('');
-            });
-        }
-
-        function loadRoomSelectOptions() {
-            db.collection('rooms').get().then(snapshot => {
-                const select = document.getElementById('roomSelect');
-                select.innerHTML = '<option value="">اختر غرفة</option>';
-                snapshot.docs.forEach(doc => {
-                    select.innerHTML += `<option value="${doc.id}">${doc.data().name}</option>`;
-                });
-            });
-        }
-
-        function loadUserSelectOptions() {
-            db.collection('users').get().then(snapshot => {
-                const select = document.getElementById('userSelect');
-                select.innerHTML = '<option value="">اختر مستخدم</option>';
-                snapshot.docs.forEach(doc => {
-                    select.innerHTML += `<option value="${doc.id}">${doc.data().name}</option>`;
-                });
-            });
-        }
-
-        async function loadRoomMessages() {
-            const roomId = document.getElementById('roomSelect').value;
-            const container = document.getElementById('roomMessagesContainer');
-            if (!roomId) return container.innerHTML = '<p style="text-align: center; color: #6b7280;">اختر غرفة لعرض الرسائل</p>';
-            
-            try {
-                const messagesSnapshot = await db.collection('rooms').doc(roomId).collection('messages').orderBy('timestamp', 'desc').limit(50).get();
-                if (messagesSnapshot.empty) return container.innerHTML = '<p style="text-align: center; color: #6b7280;">لا توجد رسائل في هذه الغرفة</p>';
-                
-                container.innerHTML = messagesSnapshot.docs.map(doc => {
-                    const msg = { id: doc.id, ...doc.data() };
-                    return `
-                        <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; margin-bottom: 8px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <img src="${msg.userAvatar}" class="avatar" style="width: 24px; height: 24px;">
-                                    <strong>${msg.userName}</strong>
-                                    <span style="font-size: 12px; color: #6b7280;">${msg.timestamp ? new Date(msg.timestamp.toDate()).toLocaleString('ar-SA') : ''}</span>
-                                </div>
-                                <button onclick="adminDeleteMessage('${roomId}', '${msg.id}')" class="action-btn btn-ban" style="font-size: 10px; padding: 4px 8px;">حذف</button>
-                            </div>
-                            <div>${msg.content}</div>
-                        </div>
-                    `;
-                }).join('');
-            } catch (error) {
-                console.error('Error loading room messages:', error);
-                container.innerHTML = '<p style="text-align: center; color: #ef4444;">حدث خطأ أثناء تحميل الرسائل</p>';
-            }
-        }
-        
-        async function adminDeleteMessage(roomId, messageId) {
-            if (!confirm('هل أنت متأكد من حذف هذه الرسالة؟')) return;
-            try {
-                await db.collection('rooms').doc(roomId).collection('messages').doc(messageId).delete();
-                await db.collection('rooms').doc(roomId).update({ messageCount: firebase.firestore.FieldValue.increment(-1) });
-                loadRoomMessages(); // Refresh the list
-            } catch (error) {
-                console.error('Error deleting message from admin panel:', error);
-            }
-        }
-
-        // =================================================================
-        // ADMIN ACTIONS
-        // =================================================================
-
-        async function promoteUser(userId) {
-            try {
-                await db.collection('users').doc(userId).update({ role: 'moderator' });
-                showNotification('تم ترقية المستخدم إلى مشرف');
-            } catch (error) {
-                console.error('Error promoting user:', error);
-            }
-        }
-
-        async function demoteUser(userId) {
-            try {
-                await db.collection('users').doc(userId).update({ role: 'user' });
-                showNotification('تم تخفيض رتبة المستخدم إلى عضو');
-            } catch (error) {
-                console.error('Error demoting user:', error);
-            }
-        }
-
-        async function banUser(userId) {
-            if (!confirm('هل أنت متأكد من حظر هذا المستخدم؟')) return;
-            try {
-                await db.collection('users').doc(userId).update({ banned: true });
-                showNotification('تم حظر المستخدم بنجاح');
-            } catch (error) {
-                console.error('Error banning user:', error);
-            }
-        }
-
-        async function unbanUser(userId) {
-            try {
-                await db.collection('users').doc(userId).update({ banned: false });
-                showNotification('تم إلغاء حظر المستخدم بنجاح');
-            } catch (error) {
-                console.error('Error unbanning user:', error);
-            }
-        }
-
-        async function sendGlobalNotification() {
-            const text = document.getElementById('notificationText').value.trim();
-            if (!text) return alert('الرجاء كتابة نص التنبيه');
-            
-            try {
-                await db.collection('settings').doc('globalNotification').set({
-                    text: text,
-                    createdBy: currentUser.name,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                document.getElementById('notificationText').value = '';
-                showNotification('تم إرسال التنبيه لجميع المستخدمين');
-            } catch (error) {
-                console.error('Error sending notification:', error);
-            }
-        }
-
-        async function sendCoins() {
-            const userId = document.getElementById('userSelect').value;
-            const amount = parseInt(document.getElementById('coinsAmount').value);
-            if (!userId || !amount || amount < 1) return alert('الرجاء اختيار مستخدم وإدخال عدد صحيح من الكوينز');
-            
-            try {
-                await db.collection('users').doc(userId).update({
-                    coins: firebase.firestore.FieldValue.increment(amount)
-                });
-                
-                document.getElementById('userSelect').value = '';
-                document.getElementById('coinsAmount').value = '';
-                showNotification(`تم إرسال ${amount} كوينز بنجاح`);
-            } catch (error) {
-                console.error('Error sending coins:', error);
-            }
-        }
-
-        // =================================================================
-        // ROOM MANAGEMENT
-        // =================================================================
-
-        function showAddRoomModal() { document.getElementById('addRoomModal').classList.add('active'); }
-        function closeAddRoomModal() { document.getElementById('addRoomModal').classList.remove('active'); }
-
-        async function addRoom() {
-            const name = document.getElementById('newRoomName').value.trim();
-            const description = document.getElementById('newRoomDesc').value.trim();
-            const image = document.getElementById('newRoomImage').value.trim();
-            const hidden = document.getElementById('newRoomHidden').checked;
-            if (!name || !description) return alert('الرجاء ملء جميع الحقول المطلوبة');
-            
-            try {
-                await db.collection('rooms').add({
-                    name, description,
-                    image: image || 'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&h=300&fit=crop',
-                    messageCount: 0, hidden,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp( )
-                });
-                closeAddRoomModal();
-                showNotification('تم إضافة الغرفة بنجاح');
-            } catch (error) {
-                console.error('Error adding room:', error);
-            }
-        }
-
-        async function showEditRoomModal(roomId) {
-            try {
-                const doc = await db.collection('rooms').doc(roomId).get();
-                if (!doc.exists) return;
-                const room = doc.data();
-                document.getElementById('editRoomId').value = roomId;
-                document.getElementById('editRoomName').value = room.name;
-                document.getElementById('editRoomDesc').value = room.description;
-                document.getElementById('editRoomImage').value = room.image;
-                document.getElementById('editRoomHidden').checked = room.hidden || false;
-                document.getElementById('editRoomModal').classList.add('active');
-            } catch (error) {
-                console.error('Error loading room data:', error);
-            }
-        }
-
-        function closeEditRoomModal() { document.getElementById('editRoomModal').classList.remove('active'); }
-
-        async function updateRoom() {
-            const roomId = document.getElementById('editRoomId').value;
-            const name = document.getElementById('editRoomName').value.trim();
-            const description = document.getElementById('editRoomDesc').value.trim();
-            const image = document.getElementById('editRoomImage').value.trim();
-            const hidden = document.getElementById('editRoomHidden').checked;
-            if (!roomId || !name || !description) return alert('الرجاء ملء جميع الحقول المطلوبة');
-            
-            try {
-                await db.collection('rooms').doc(roomId).update({ name, description, image, hidden });
-                closeEditRoomModal();
-                showNotification('تم تحديث الغرفة بنجاح');
-            } catch (error) {
-                console.error('Error updating room:', error);
-            }
-        }
-
-        async function deleteRoom(roomId) {
-            if (!confirm('هل أنت متأكد من حذف هذه الغرفة؟ سيتم حذف جميع الرسائل أيضاً.')) return;
-            try {
-                const messagesSnapshot = await db.collection('rooms').doc(roomId).collection('messages').get();
-                const batch = db.batch();
-                messagesSnapshot.docs.forEach(doc => batch.delete(doc.ref));
-                await batch.commit();
-                await db.collection('rooms').doc(roomId).delete();
-                showNotification('تم حذف الغرفة وجميع رسائلها بنجاح');
-            } catch (error) {
-                console.error('Error deleting room:', error);
-            }
-        }
-
-        // =================================================================
-        // PRIVATE MESSAGES & ADMIN CONTACT
+        // PRIVATE MESSAGES
         // =================================================================
 
         function showPrivateMessages() {
-            alert("ميزة الرسائل الخاصة قيد التطوير.");
+            document.getElementById('roomsView').classList.add('hidden');
+            document.getElementById('chatView').classList.add('hidden');
+            document.getElementById('adminView').classList.add('hidden');
+            document.getElementById('privateMessagesView').classList.remove('hidden');
+            document.getElementById('privateChatView').classList.add('hidden');
+            
+            if (messagesListener) {
+                messagesListener();
+                messagesListener = null;
+            }
+            currentRoom = null;
+            renderPrivateChatsList();
         }
 
-        function showAdminContactModal() { document.getElementById('admin-contact-modal').classList.add('active'); }
-        function closeAdminContactModal() { document.getElementById('admin-contact-modal').classList.remove('active'); }
+        function goBackToPrivateChats() {
+            showPrivateMessages();
+        }
 
-        async function sendAdminContactMessage() {
-            const messageText = document.getElementById('admin-contact-message').value.trim();
-            if (!messageText) return showNotification('الرجاء كتابة رسالة.', 'error');
-            if (!currentUser) return showNotification('الرجاء تسجيل الدخول أولاً.', 'error');
-
-            try {
-                await db.collection('adminMessages').add({
-                    fromUserId: currentUser.id,
-                    fromUserName: currentUser.name,
-                    message: messageText,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    status: 'new'
+        async function startPrivateChat(targetUserId, targetUserName, targetUserAvatar) {
+            if (!currentUser) return;
+            
+            const users = [currentUser.id, targetUserId].sort();
+            const chatId = users.join('_');
+            
+            // Create chat document if it doesn't exist
+            const chatRef = db.collection('privateChats').doc(chatId);
+            const chatDoc = await chatRef.get();
+            
+            if (!chatDoc.exists) {
+                await chatRef.set({
+                    users: users,
+                    userNames: { [currentUser.id]: currentUser.name, [targetUserId]: targetUserName },
+                    userAvatars: { [currentUser.id]: currentUser.avatar, [targetUserId]: targetUserAvatar },
+                    lastMessage: '',
+                    lastMessageTimestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
-                showNotification('تم إرسال رسالتك إلى الإدارة بنجاح.');
-                closeAdminContactModal();
+            }
+
+            showPrivateChat(chatId, targetUserName);
+            closeModal('profileView');
+        }
+
+        function showPrivateChat(chatId, userName) {
+            currentPrivateChatId = chatId;
+            document.getElementById('privateMessagesView').classList.add('hidden');
+            document.getElementById('privateChatView').classList.remove('hidden');
+            document.getElementById('privateChatUserName').textContent = userName;
+            document.getElementById('privateMessagesContainer').innerHTML = '';
+            
+            renderPrivateMessages();
+        }
+
+        async function sendPrivateMessage() {
+            const input = document.getElementById('privateMessageInput');
+            const content = input.value.trim();
+            
+            if (!content || !currentPrivateChatId || !currentUser) return;
+            
+            input.value = '';
+            
+            try {
+                const messageData = {
+                    senderId: currentUser.id,
+                    content: content,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                const chatRef = db.collection('privateChats').doc(currentPrivateChatId);
+                await chatRef.collection('messages').add(messageData);
+                
+                // Update last message in chat document
+                await chatRef.update({
+                    lastMessage: content,
+                    lastMessageTimestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
             } catch (error) {
-                console.error("Error sending admin contact message:", error);
-                showNotification('حدث خطأ أثناء إرسال الرسالة.', 'error');
+                console.error("Error sending private message: ", error);
+                input.value = content;
             }
         }
-        
-        // =================================================================
-        // HEADER & ADS MANAGEMENT
-        // =================================================================
 
-        async function loadHeaderImageUrl() {
+        function renderPrivateMessages() {
+            const container = document.getElementById('privateMessagesContainer');
+            if (!currentPrivateChatId) return;
+            if (privateMessagesListener) privateMessagesListener();
+
+            privateMessagesListener = db.collection('privateChats').doc(currentPrivateChatId).collection('messages')
+                .orderBy('timestamp', 'asc')
+                .limitToLast(100)
+                .onSnapshot(snapshot => {
+                    container.innerHTML = snapshot.docs.map(doc => {
+                        const msg = { id: doc.id, ...doc.data() };
+                        const isSent = msg.senderId === currentUser.id;
+                        
+                        let messageClass = isSent ? 'message-sent' : 'message-received';
+                        
+                        const timestamp = msg.timestamp ? new Date(msg.timestamp.toDate()).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' }) : '';
+                        
+                        return `
+                            <div class="message ${messageClass}">
+                                <div>${msg.content.replace(/\n/g, '<br>')}</div>
+                                <div style="font-size: 12px; opacity: 0.7; margin-top: 4px; text-align: left;">${timestamp}</div>
+                            </div>
+                        `;
+                    }).join('');
+                    container.scrollTop = container.scrollHeight;
+                }, error => console.error("Error fetching private messages: ", error));
+        }
+
+        async function renderPrivateChatsList() {
+            const listDiv = document.getElementById('privateChatsList');
+            listDiv.innerHTML = 'جاري تحميل المحادثات الخاصة...';
+            
             try {
-                const doc = await db.collection("settings").doc("general").get();
-                if (doc.exists && doc.data().headerImage) {
-                    document.getElementById("header-image-url").value = doc.data().headerImage;
+                const snapshot = await db.collection('privateChats')
+                    .where('users', 'array-contains', currentUser.id)
+                    .orderBy('lastMessageTimestamp', 'desc')
+                    .get();
+                
+                const chats = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                listDiv.innerHTML = chats.map(chat => {
+                    const targetUserId = chat.users.find(id => id !== currentUser.id);
+                    const targetUserName = chat.userNames[targetUserId] || 'مستخدم محذوف';
+                    const targetUserAvatar = chat.userAvatars[targetUserId] || 'https://via.placeholder.com/100';
+                    
+                    return `
+                        <div class="user-list-item" onclick="showPrivateChat('${chat.id}', '${targetUserName}')" style="cursor: pointer;">
+                            <div class="user-info">
+                                <img src="${targetUserAvatar}" class="profile-btn" alt="Avatar">
+                                <div>
+                                    <strong>${targetUserName}</strong>
+                                    <p style="font-size: 14px; color: #6b7280;">${chat.lastMessage.substring(0, 30)}...</p>
+                                </div>
+                            </div>
+                            <span style="font-size: 12px; color: #9ca3af;">${chat.lastMessageTimestamp ? new Date(chat.lastMessageTimestamp.toDate()).toLocaleTimeString('ar-SA') : ''}</span>
+                        </div>
+                    `;
+                }).join('');
+                
+                if (chats.length === 0) {
+                    listDiv.innerHTML = '<p style="text-align: center; color: #6b7280;">لا توجد محادثات خاصة حالياً.</p>';
                 }
+
             } catch (error) {
-                console.error("Error loading header image URL:", error);
+                console.error("Error rendering private chats:", error);
+                listDiv.innerHTML = '<p style="text-align: center; color: #ef4444;">فشل تحميل المحادثات الخاصة.</p>';
             }
         }
 
-        async function updateHeaderImage() {
-            const newImageUrl = document.getElementById("header-image-url").value.trim();
-            if (!newImageUrl) return alert("الرجاء إدخال رابط صورة الهيدر.");
+        // =================================================================
+        // ADMIN DASHBOARD
+        // =================================================================
 
+        async function renderAdminDashboard() {
+            if (currentUser.role !== 'admin') return;
+            
             try {
-                await db.collection("settings").doc("general").set({ headerImage: newImageUrl }, { merge: true });
-                showNotification("تم تحديث صورة الهيدر بنجاح.");
-                document.querySelector(".main-header").style.backgroundImage = `url('${newImageUrl}')`;
+                const [usersSnapshot, roomsSnapshot, messagesSnapshot] = await Promise.all([
+                    db.collection('users').get(),
+                    db.collection('rooms').get(),
+                    db.collection('stats').doc('messages').get() // Assuming a stats document for total messages
+                ]);
+
+                const totalUsers = usersSnapshot.size;
+                const onlineUsers = usersSnapshot.docs.filter(doc => doc.data().isOnline).length;
+                const totalRooms = roomsSnapshot.size;
+                const totalMessages = messagesSnapshot.exists ? messagesSnapshot.data().count : 0;
+
+                document.getElementById('totalUsers').textContent = totalUsers;
+                document.getElementById('onlineUsers').textContent = onlineUsers;
+                document.getElementById('totalRooms').textContent = totalRooms;
+                document.getElementById('totalMessages').textContent = totalMessages;
+
             } catch (error) {
-                console.error("Error updating header image:", error);
-                alert("حدث خطأ أثناء تحديث صورة الهيدر.");
+                console.error("Error rendering admin dashboard:", error);
             }
         }
 
-        async function applyHeaderImageOnLoad() {
+        async function renderUserList() {
+            if (currentUser.role !== 'admin') return;
+            const userListDiv = document.getElementById('userList');
+            userListDiv.innerHTML = 'جاري تحميل المستخدمين...';
+            
             try {
-                const doc = await db.collection("settings").doc("general").get();
-                if (doc.exists && doc.data().headerImage) {
-                    document.querySelector(".main-header").style.backgroundImage = `url('${doc.data().headerImage}')`;
-                }
+                const snapshot = await db.collection('users').orderBy('createdAt', 'desc').get();
+                const users = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                userListDiv.innerHTML = users.map(user => `
+                    <div class="user-list-item">
+                        <div class="user-info">
+                            <img src="${user.avatar}" class="profile-btn" alt="Avatar">
+                            <div>
+                                <strong>${user.name}</strong>
+                                <p style="font-size: 14px; color: #6b7280;">${user.email}</p>
+                            </div>
+                        </div>
+                        <div class="user-actions">
+                            <span class="user-badge ${getRoleClass(user.role)}">${getRoleText(user.role)}</span>
+                            <button class="btn btn-primary" style="padding: 4px 8px; font-size: 12px;" onclick="showAdminActionsModal('${user.id}', ${JSON.stringify(user).replace(/"/g, '&quot;')})">إجراءات</button>
+                        </div>
+                    </div>
+                `).join('');
+
             } catch (error) {
-                console.error("Error applying header image on load:", error);
+                console.error("Error rendering user list:", error);
+                userListDiv.innerHTML = '<p style="text-align: center; color: #ef4444;">فشل تحميل قائمة المستخدمين.</p>';
             }
         }
 
-        async function loadAds() {
-            try {
-                const doc = await db.collection("settings").doc("ads").get();
-                const ads = (doc.exists && doc.data().items) ? doc.data().items : [];
-                const adsBanner = document.getElementById("ads-banner");
-                const adsContainer = document.getElementById("ads-banner-container");
+        function showAdminActionsModal(userId, userData) {
+            currentAdminActionUserId = userId;
+            currentAdminActionUserData = userData;
+            
+            document.getElementById('adminActionUserName').textContent = userData.name;
+            
+            // Toggle Ban/Unban buttons
+            document.getElementById('banUserBtn').classList.toggle('hidden', userData.isBanned);
+            document.getElementById('unbanUserBtn').classList.toggle('hidden', !userData.isBanned);
 
-                if (ads.length > 0) {
-                    adsBanner.innerHTML = ads.map(ad => `<span class="ads-banner-item">${ad}</span>`).join('<span class="ads-separator"></span>');
-                    adsContainer.classList.remove("hidden");
+            // Toggle Promote/Demote Mod buttons
+            document.getElementById('promoteToModBtn').classList.toggle('hidden', userData.role === 'moderator' || userData.role === 'admin');
+            document.getElementById('demoteFromModBtn').classList.toggle('hidden', userData.role !== 'moderator');
+
+            // Toggle Promote/Demote Admin buttons
+            document.getElementById('promoteToAdminBtn').classList.toggle('hidden', userData.role === 'admin');
+            document.getElementById('demoteFromAdminBtn').classList.toggle('hidden', userData.role !== 'admin');
+
+            document.getElementById('adminActionsModal').classList.add('active');
+        }
+
+        async function banUser() {
+            if (!confirm(`هل أنت متأكد من حظر المستخدم ${currentAdminActionUserData.name}؟`)) return;
+            try {
+                await db.collection('users').doc(currentAdminActionUserId).update({
+                    isBanned: true
+                });
+                showNotification(`تم حظر ${currentAdminActionUserData.name} بنجاح.`, 'error');
+                closeModal('adminActionsModal');
+                renderUserList();
+            } catch (error) {
+                console.error("Error banning user:", error);
+                showNotification('فشل حظر المستخدم.', 'error');
+            }
+        }
+
+        async function unbanUser() {
+            if (!confirm(`هل أنت متأكد من إلغاء حظر المستخدم ${currentAdminActionUserData.name}؟`)) return;
+            try {
+                await db.collection('users').doc(currentAdminActionUserId).update({
+                    isBanned: false
+                });
+                showNotification(`تم إلغاء حظر ${currentAdminActionUserData.name} بنجاح.`, 'success');
+                closeModal('adminActionsModal');
+                renderUserList();
+            } catch (error) {
+                console.error("Error unbanning user:", error);
+                showNotification('فشل إلغاء حظر المستخدم.', 'error');
+            }
+        }
+
+        async function promoteUser(newRole) {
+            const roleText = getRoleText(newRole);
+            if (!confirm(`هل أنت متأكد من تغيير دور ${currentAdminActionUserData.name} إلى ${roleText}؟`)) return;
+            try {
+                await db.collection('users').doc(currentAdminActionUserId).update({
+                    role: newRole
+                });
+                showNotification(`تم تغيير دور ${currentAdminActionUserData.name} إلى ${roleText} بنجاح.`, 'success');
+                closeModal('adminActionsModal');
+                renderUserList();
+            } catch (error) {
+                console.error("Error promoting user:", error);
+                showNotification('فشل تغيير دور المستخدم.', 'error');
+            }
+        }
+
+        async function renderAdminRoomList() {
+            if (currentUser.role !== 'admin') return;
+            const roomListDiv = document.getElementById('roomList');
+            roomListDiv.innerHTML = 'جاري تحميل الغرف...';
+            
+            try {
+                const snapshot = await db.collection('rooms').orderBy('createdAt', 'asc').get();
+                const rooms = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                roomListDiv.innerHTML = rooms.map(room => `
+                    <div class="user-list-item">
+                        <div class="user-info">
+                            <div>
+                                <strong>${room.name}</strong>
+                                <p style="font-size: 14px; color: #6b7280;">${room.description}</p>
+                            </div>
+                        </div>
+                        <div class="user-actions">
+                            <span class="user-badge ${room.isHidden ? 'admin-badge' : 'user-badge-default'}">${room.isHidden ? 'مخفية' : 'عامة'}</span>
+                            <button class="btn btn-danger" style="padding: 4px 8px; font-size: 12px;" onclick="deleteRoom('${room.id}', '${room.name}')">حذف</button>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error("Error rendering admin room list:", error);
+                roomListDiv.innerHTML = '<p style="text-align: center; color: #ef4444;">فشل تحميل قائمة الغرف.</p>';
+            }
+        }
+
+        async function deleteRoom(roomId, roomName) {
+            if (!confirm(`هل أنت متأكد من حذف الغرفة ${roomName}؟ سيتم حذف جميع الرسائل.`)) return;
+            try {
+                // Delete all messages subcollection (requires more complex logic or cloud function, simplified here)
+                // For simplicity, we assume a cloud function handles subcollection deletion.
+                await db.collection('rooms').doc(roomId).delete();
+                
+                showNotification(`تم حذف الغرفة ${roomName} بنجاح.`, 'success');
+                renderAdminRoomList();
+                renderRooms();
+            } catch (error) {
+                console.error("Error deleting room:", error);
+                showNotification('فشل حذف الغرفة.', 'error');
+            }
+        }
+
+        // =================================================================
+        // ADS MANAGEMENT
+        // =================================================================
+
+        async function listenForAds() {
+            const adsBanner = document.getElementById('ads-banner');
+            const adsBannerContainer = document.getElementById('ads-banner-container');
+            
+            db.collection('settings').doc('ads').onSnapshot(doc => {
+                if (doc.exists && doc.data().items && doc.data().items.length > 0) {
+                    const ads = doc.data().items;
+                    adsBanner.innerHTML = ads.map(ad => `<div class="ads-banner-item">${ad}</div>`).join('<div class="ads-separator"></div>');
+                    adsBannerContainer.classList.remove('hidden');
                 } else {
-                    adsContainer.classList.add("hidden");
+                    adsBannerContainer.classList.add('hidden');
                 }
-            } catch (error) {
-                console.error("Error loading ads:", error);
-            }
+            }, error => console.error("Error listening for ads:", error));
         }
 
         async function addAd() {
-            const adTextInput = document.getElementById('ad-text-input');
-            const adText = adTextInput.value.trim();
-            if (!adText) return;
+            const input = document.getElementById('newAdInput');
+            const newAd = input.value.trim();
+            if (!newAd) return showNotification('الرجاء إدخال نص الإعلان.', 'error');
 
             try {
-                await db.collection("settings").doc("ads").set({
-                    items: firebase.firestore.FieldValue.arrayUnion(adText)
-                }, { merge: true });
-                showNotification("تم إضافة الإعلان بنجاح!");
-                adTextInput.value = '';
-                loadAds();
+                const adsRef = db.collection('settings').doc('ads');
+                await adsRef.update({
+                    items: firebase.firestore.FieldValue.arrayUnion(newAd)
+                });
+                input.value = '';
+                showNotification('تم إضافة الإعلان بنجاح!');
                 renderAdsManagement();
             } catch (error) {
-                console.error("Error adding ad:", error);
+                // If document doesn't exist, create it
+                if (error.code === 'not-found') {
+                    await db.collection('settings').doc('ads').set({
+                        items: [newAd]
+                    });
+                    input.value = '';
+                    showNotification('تم إضافة الإعلان بنجاح!');
+                    renderAdsManagement();
+                } else {
+                    console.error("Error adding ad:", error);
+                    showNotification('فشل إضافة الإعلان.', 'error');
+                }
             }
         }
 
-        async function deleteAd(adText) {
-            if (!confirm(`هل أنت متأكد من حذف الإعلان: "${adText}"؟`)) return;
+        async function deleteAd(ad) {
+            if (!confirm(`هل أنت متأكد من حذف الإعلان: "${ad}"؟`)) return;
             try {
-                await db.collection("settings").doc("ads").update({
-                    items: firebase.firestore.FieldValue.arrayRemove(adText)
+                const adsRef = db.collection('settings').doc('ads');
+                await adsRef.update({
+                    items: firebase.firestore.FieldValue.arrayRemove(ad)
                 });
-                showNotification("تم حذف الإعلان بنجاح!");
-                loadAds();
+                showNotification('تم حذف الإعلان بنجاح!');
                 renderAdsManagement();
             } catch (error) {
                 console.error("Error deleting ad:", error);
@@ -1881,8 +1420,7 @@ doc => ({ id: doc.id, ...doc.data() }));
                 adsListDiv.innerHTML = ads.map(ad => `
                     <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid #e5e7eb;">
                         <span>${ad}</span>
-                        <button class="btn btn-danger" style="padding: 
-4px 8px; font-size: 12px;" onclick="deleteAd('${ad}')">حذف</button>
+                        <button class="btn btn-danger" style="padding: 4px 8px; font-size: 12px;" onclick="deleteAd('${ad}')">حذف</button>
                     </div>
                 `).join('');
             }
@@ -1899,7 +1437,7 @@ doc => ({ id: doc.id, ...doc.data() }));
 
         function getRoleClass(role) {
             const roleClasses = { admin: 'admin-badge', moderator: 'moderator-badge' };
-            return roleClasses[role] || '';
+            return roleClasses[role] || 'user-badge-default';
         }
 
         function showNotification(message, type = 'success') {
@@ -1983,7 +1521,7 @@ doc => ({ id: doc.id, ...doc.data() }));
         // =================================================================
 
         document.addEventListener("DOMContentLoaded", () => {
-            applyHeaderImageOnLoad();
+            // No applyHeaderImageOnLoad function found, removing call.
         });
 
         document.getElementById('messageInput').addEventListener('keypress', function(e) {
